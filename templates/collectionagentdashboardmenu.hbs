@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milk Accounting - Dashboard</title>
+    <link rel="stylesheet" href="/collectionagentdashboardmenu.css">
+    <link rel="stylesheet" href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css)">
+    <!-- ఫాంట్ అవసమ్ ఐకాన్స్ కొరకు లింక్ సరిచేయబడింది -->
+</head>
+<body>
+
+    <!-- 1. సైడ్‌బార్ ప్యానెల్ -->
+    <div class="sidebar">
+        <div class="logo">
+            <h2>🥛 Ksheera Accounting</h2>
+            <p>Collection Agent</p>
+        </div>
+        <div class="menu">
+            <a href="/collectionagentdashboardmenu" class="active">📊 Dashboard</a>
+            <a href="/agent/profile">👤 Profile</a>
+            <a href="/agent/farmers">🚜 Farmers</a>
+            <a href="/agent/collections">🥛 Milk Collection</a>
+            <a href="/agent/farmer-ledger">📒 Farmers Ledger</a>
+            <a href="/agent/payments">💰 Payment Reports</a>
+            <a href="/agent/payment-transactions">📈 Payment Transactions</a>
+            <a href="/agent/device-status">🖥️ Device Status</a>
+            <a href="/agent/settings">⚙️ Settings</a>
+            <a href="/logout" class="logout">🚪 Logout</a>
+        </div>
+    </div>
+
+    <!-- 2. మెయిన్ కంటెంట్ డ్యాష్‌బోర్డ్ -->
+    <div class="main-content">
+        <!-- 🌟 హెడర్ భాగం: ఎడమవైపు టైటిల్, కుడివైపు ఏజెంట్ వివరాల బాడ్జ్ -->
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
+            <h1>📊 Dashboard Overview</h1>
+            
+            <!-- డైనమిక్ ఏజెంట్ బాడ్జ్ (డేటాబేస్ నుండి వచ్చే పేరు, సెంటర్ వివరాలు) -->
+            <div class="agent-welcome-badge" style="text-align: right; background: #FEFCE8; padding: 8px 15px; border-radius: 10px; border: 1px solid #E2E8F0;">
+                <span style="font-size: 14px; font-weight: 600; color: #15803D; display: block;">
+                    👤 {{agent.name}}
+                </span>
+                <span style="font-size: 11px; color: #64748B; display: block; margin-top: 2px;">
+                    🏢 {{agent.centerName}}
+                </span>
+                <span id="liveDate"
+      style="font-size: 11px; color: #64748B; display: block; margin-top: 8px;">
+</span>
+
+<span id="liveTime"
+      style="font-size: 13px; font-weight: 600; color: #15803D; display: block; margin-top: 2px;">
+</span>
+            </div>
+        </header>
+
+        <!-- 📅 తేదీల ఆధారంగా ఫిల్టర్ చేసే బార్ -->
+        <div class="filter-card" id="dashboardSection">
+            <div class="filter-group">
+                <label for="fromDate">From:</label>
+                <input type="date" id="fromDate">
+            </div>
+            <div class="filter-group">
+                <label for="toDate">To:</label>
+                <input type="date" id="toDate">
+            </div>
+            <button class="filter-btn" onclick="filterDashboardData()"><i class="fa-solid fa-filter"></i> Filter</button>
+        
+        <button class="filter-btn"
+                onclick="downloadDashboardPDF()">
+            <i class="fa-solid fa-file-pdf"></i>
+            Download PDF
+        </button>
+        </div>
+
+        <!-- 📈 ప్రధాన గణాంకాల గ్రిడ్ (Stats Grid) -->
+        <div id="dashboardPDF">
+        <div class="stats-grid">
+            <div class="stat-card total-milk">
+                <div class="stat-info">
+                    <h3>మొత్తం పాలు (Total Milk)</h3>
+                  <p id="txtTotalMilk">{{totalMilk}} L</p>
+                </div>
+                <div class="stat-icon"><i class="fa-solid fa-tint"></i></div>
+            </div>
+            <div class="stat-card farmers">
+                <div class="stat-info">
+                    <h3>మొత్తం రైతులు (Total Farmers)</h3>
+                    <!-- మోంగోడిబి నుండి వచ్చే డైనమిక్ కౌంట్ ఇక్కడ ప్రింట్ అవుతుంది -->
+                    <p id="txtTotalFarmers">{{totalFarmers}}</p>
+                </div>
+                <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+            </div>
+            <div class="stat-card amount">
+                <div class="stat-info">
+                    <h3>మొత్తం విలువ (Total Amount)</h3>
+                   <p id="txtTotalAmount">₹ {{totalAmount}}</p>
+                </div>
+                <div class="stat-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+            </div>
+        </div>
+
+        <!-- 🌅 🌌 సెషన్ వైజ్ బ్రేక్‌డౌన్ (Morning vs Evening) -->
+        <div class="session-container">
+    <!-- ఉదయం సెషన్ కార్డ్ -->
+    <div class="session-card">
+        <h3 class="session-title morning">
+            <i class="fa-solid fa-sun"></i>
+            Morning Session (ఉదయం)
+        </h3>
+
+        <div class="session-data">
+            <span>మొత్తం పాలు (Milk):</span>
+            <span id="lblMorningMilk">
+                {{morningMilk}} L
+            </span>
+        </div>
+
+        <div class="session-data">
+            <span>మొత్తం రైతులు (Farmers):</span>
+            <span id="lblMorningFarmers">
+                {{morningFarmers}}
+            </span>
+        </div>
+
+        <div class="session-data">
+            <span>మొత్తం విలువ (Amount):</span>
+            <span id="lblMorningAmount">
+                ₹ {{morningAmount}}
+            </span>
+        </div>
+    </div>
+
+            <!-- సాయంత్రం సెషన్ కార్డ్ -->
+            <div class="session-card">
+    <h3 class="session-title evening">
+        <i class="fa-solid fa-moon"></i>
+        Evening Session (సాయంత్రం)
+    </h3>
+
+    <div class="session-data">
+        <span>మొత్తం పాలు (Milk):</span>
+        <span id="lblEveningMilk">
+            {{eveningMilk}} L
+        </span>
+    </div>
+
+    <div class="session-data">
+        <span>మొత్తం రైతులు (Farmers):</span>
+        <span id="lblEveningFarmers">
+            {{eveningFarmers}}
+        </span>
+    </div>
+
+    <div class="session-data">
+        <span>మొత్తం విలువ (Amount):</span>
+        <span id="lblEveningAmount">
+            ₹ {{eveningAmount}}
+        </span>
+    </div>
+</div>
+ </div>
+</div>
+       
+</div>
+<script>
+async function filterDashboardData() {
+
+    const fromDate =
+        document.getElementById(
+            "fromDate"
+        ).value;
+
+    const toDate =
+        document.getElementById(
+            "toDate"
+        ).value;
+
+    if (!fromDate || !toDate) {
+        alert(
+            "Please select dates."
+        );
+        return;
+    }
+
+    try {
+        const response =
+            await fetch(
+                `/api/dashboard-stats?fromDate=${fromDate}&toDate=${toDate}`
+            );
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+            alert(
+                "Unable to load data."
+            );
+            return;
+        }
+
+        const s = data.stats;
+
+        document.getElementById(
+            "txtTotalMilk"
+        ).innerText =
+            s.totalMilk.toFixed(2) +
+            " L";
+
+        document.getElementById(
+            "txtTotalAmount"
+        ).innerText =
+            "₹ " +
+            s.totalAmount.toFixed(2);
+
+        document.getElementById(
+            "lblMorningMilk"
+        ).innerText =
+            s.morningMilk.toFixed(2) +
+            " L";
+
+        document.getElementById(
+            "lblMorningAmount"
+        ).innerText =
+            "₹ " +
+            s.morningAmount.toFixed(2);
+
+        document.getElementById(
+            "lblMorningFarmers"
+        ).innerText =
+            s.morningFarmers;
+
+        document.getElementById(
+            "lblEveningMilk"
+        ).innerText =
+            s.eveningMilk.toFixed(2) +
+            " L";
+
+        document.getElementById(
+            "lblEveningAmount"
+        ).innerText =
+            "₹ " +
+            s.eveningAmount.toFixed(2);
+
+        document.getElementById(
+            "lblEveningFarmers"
+        ).innerText =
+            s.eveningFarmers;
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+/*pdf generation js script*/
+function downloadDashboardPDF() {
+
+    const fromDate =
+        document.getElementById("fromDate").value;
+
+    const toDate =
+        document.getElementById("toDate").value;
+
+    if (!fromDate || !toDate) {
+        alert("Please select dates first.");
+        return;
+    }
+
+    const element =
+        document.getElementById("dashboardPDF");
+
+    const options = {
+        margin: 10,
+        filename:
+            `Dashboard_Report_${fromDate}_to_${toDate}.pdf`,
+        image: {
+            type: "jpeg",
+            quality: 0.98
+        },
+        html2canvas: {
+            scale: 2,
+            useCORS: true
+        },
+        jsPDF: {
+            unit: "mm",
+            format: "a4",
+            orientation: "portrait"
+        }
+    };
+
+    html2pdf()
+        .set(options)
+        .from(element)
+        .save();
+}
+/*for live date and time on dashbaord*/
+function updateDateTime() {
+    const now = new Date();
+
+    document.getElementById("liveDate").innerHTML =
+        "📅 " + now.toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+
+    document.getElementById("liveTime").innerHTML =
+        "🕒 " + now.toLocaleTimeString("en-IN");
+}
+
+updateDateTime();
+setInterval(updateDateTime, 1000);
+/*collection agent logout popup*/
+document.querySelector(".logout")
+?.addEventListener("click", function(e){
+
+    e.preventDefault();
+
+    const confirmLogout = confirm(
+        "Are you sure you want to logout?"
+    );
+
+    if(confirmLogout){
+
+        alert(
+            "Successfully logged out."
+        );
+
+        window.location.href =
+            "/logout";
+    }
+
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milk Collection Management</title>
+    <link rel="stylesheet" href="/collections.css">
+    <link rel="stylesheet" href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css)">
+<script src="/socket.io/socket.io.js"></script>
+
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <h2>🥛 Ksheera Accounting</h2>
+            <p>Collection Agent</p>
+        </div>
+
+        <div class="menu">
+            <a href="/collectionagentdashboardmenu">📊 Dashboard</a>
+            <a href="/agent/profile">👤 Profile</a>
+            <a href="/agent/farmers">🚜 Farmers</a>
+            <a href="/agent/collections" class="active">🥛 Milk Collection</a>
+            <a href="/agent/farmer-ledger">📒 Farmers Ledger</a>
+            <a href="/agent/payments">💰 Payment Reports</a>
+            <a href="/agent/payment-transactions">📈 Payment Transactions</a>
+            <a href="/agent/device-status">🖥️ Device Status</a>
+            <a href="/agent/settings">⚙️ Settings</a>
+            <a href="/logout" class="logout">🚪 Logout</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header class="page-header">
+            <h1>🥛 Milk Collection</h1>
+            <a href="/collectionagentdashboardmenu" class="filter-btn back-btn">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </header>
+
+        <div class="card">
+            <div class="section-header">
+                <h2>
+                    {{#if collection}}
+                        ✏️ Edit Milk Record
+                    {{else}}
+                        📥 New Milk Entry
+                    {{/if}}
+                </h2>
+
+                <div class="section-actions">
+                    <button type="button" id="updateRatesBtn" class="filter-btn">
+                        💵 Update Rates
+                    </button>
+
+                    <button type="button" id="toggleFormBtn" class="filter-btn">
+                        <i class="fa-solid fa-plus"></i>
+                        Add Entry
+                    </button>
+                </div>
+            </div>
+
+            <!-- Update Base Rates Section -->
+            <div id="baseRateCard" class="base-rate-card hidden">
+                <h3 class="section-title">💵 Update Base Rates</h3>
+
+                <div class="grid-form">
+                    <div class="form-group">
+                        <label for="rateMilkType">Milk Type</label>
+                        <select id="rateMilkType" class="input-control">
+                            <option value="Cow">🐄 Cow</option>
+                            <option value="Buffalo">🐃 Buffalo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fatFrom">FAT From (%)</label>
+                        <input type="number" id="fatFrom" step="0.01" min="0" placeholder="5.10" class="input-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fatTo">FAT To (%)</label>
+                        <input type="number" id="fatTo" step="0.01" min="0" placeholder="5.19" class="input-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ratePerLiter">Rate Per Liter (₹)</label>
+                        <input type="number" id="ratePerLiter" step="0.01" min="0" placeholder="40" class="input-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="effectiveFrom">Effective From</label>
+                        <input type="date" id="effectiveFrom" required class="input-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tsRate">TS Rate (₹)</label>
+                        <input type="number" step="0.01" min="0" id="tsRate" placeholder="0.00" class="input-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="updateFatPrice">Fat Price (₹/Kg)</label>
+                        <input type="number" step="0.01" min="0" id="updateFatPrice" placeholder="0.00" class="input-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="updateSnfPrice">SNF Price (₹/Kg)</label>
+                        <input type="number" step="0.01" min="0" id="updateSnfPrice" placeholder="0.00" class="input-control">
+                    </div>
+                </div>
+
+                <div class="rate-actions">
+                    <button type="button" id="saveSlabBtn" class="filter-btn">
+                        💾 Save FAT Slab
+                    </button>
+
+                    <button type="button" id="saveRatesBtn" class="filter-btn">
+                        💾 Save Rates
+                    </button>
+                </div>
+
+                <div class="table-wrap slab-table-wrap">
+                    <table id="fatSlabTable" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>From FAT</th>
+                                <th>To FAT</th>
+                                <th>Rate/Liter</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fatSlabBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Milk Collection Form -->
+            <div id="milkFormCard" class="{{#if collection}}visible{{else}}hidden{{/if}}">
+                {{#if collection}}
+                <form action="/agent/update-collection/{{collection._id}}" method="POST" id="milkCollectionForm">
+                {{else}}
+                <form action="/agent/collections" method="POST" id="milkCollectionForm">
+                {{/if}}
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="farmerId">Select Farmer</label>
+                            <select name="farmerId" id="farmerId" required class="input-control">
+                                <option value="">-- Choose Farmer --</option>
+                                {{#each farmers}}
+                                <option value="{{this._id}}" {{#if (eq ../collection.farmerId this._id)}}selected{{/if}}>
+                                    [{{this.farmerId}}] - {{this.name}}
+                                </option>
+                                {{/each}}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="session">Session</label>
+                            <select name="session" id="session" required class="input-control">
+                                <option value="Morning" {{#if (eq collection.session "Morning")}}selected{{/if}}>🌅 Morning</option>
+                                <option value="Evening" {{#if (eq collection.session "Evening")}}selected{{/if}}>🌌 Evening</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="milkType">Milk Type</label>
+                            <select name="milkType" id="milkType" required class="input-control">
+                                <option value="Cow" {{#if (eq collection.milkType "Cow")}}selected{{/if}}>🐄 Cow</option>
+                                <option value="Buffalo" {{#if (eq collection.milkType "Buffalo")}}selected{{/if}}>🐃 Buffalo</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="calcMethod">Calculation Method</label>
+                            <select name="calcMethod" id="calcMethod" required class="input-control">
+                                <option value="dynamicTS" {{#if (eq collection.calcMethod "dynamicTS")}}selected{{/if}}>
+                                    📈 TS Method
+                                </option>
+                                <option value="twoAxis" {{#if (eq collection.calcMethod "twoAxis")}}selected{{/if}}>
+                                    🔀 Two-Axis Method
+                                </option>
+                                <option value="fatBased" {{#if (eq collection.calcMethod "fatBased")}}selected{{/if}}>
+                                    🥛 Fat Based Method
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label class="checkbox-label" for="manualEntry">
+                                <input type="checkbox" id="manualEntry" name="manualEntry">
+                                <span>⚠️ Machine Not Working? Enter Readings Manually</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="liters">Liters (పాలు లీటర్లు)</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="liters"
+                                id="liters"
+                                readonly
+                                value="{{collection.liters}}"
+                                required
+                                placeholder="0.00"
+                                class="input-control"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fat">FAT %</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="fat"
+                                id="fat"
+                                readonly
+                                value="{{collection.fat}}"
+                                required
+                                placeholder="0.00"
+                                class="input-control"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="snf">SNF %</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="snf"
+                                id="snf"
+                                readonly
+                                value="{{collection.snf}}"
+                                required
+                                placeholder="0.00"
+                                class="input-control"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="grid-2 rate-grid">
+                        <div class="form-group" id="baseRateGroup">
+                            <label for="rate">Base Rate Factor (₹)</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="rate"
+                                id="rate"
+                                readonly
+                                value="{{collection.rate}}"
+                                required
+                                placeholder="0.00"
+                                class="input-control"
+                            >
+                        </div>
+
+                        <div class="form-group hidden" id="fatRateGroup">
+                            <label for="fatPrice">Fixed Fat Rate (₹/Kg)</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="fatPrice"
+                                id="fatPrice"
+                                value="{{collection.fatPrice}}"
+                                placeholder="0.00"
+                                readonly
+                                class="input-control"
+                            >
+                        </div>
+
+                        <div class="form-group hidden" id="snfRateGroup">
+                            <label for="snfPrice">Fixed SNF Rate (₹/Kg)</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="snfPrice"
+                                id="snfPrice"
+                                value="{{collection.snfPrice}}"
+                                placeholder="0.00"
+                                readonly
+                                class="input-control"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="totalAmount">Total Amount (₹)</label>
+                            <input
+                                type="number"
+                                step="0.01"
+                                name="totalAmount"
+                                id="totalAmount"
+                                value="{{collection.totalAmount}}"
+                                required
+                                placeholder="0.00"
+                                readonly
+                                class="input-control total-amount-input"
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="filter-btn">
+                        {{#if collection}}
+                            <i class="fa-solid fa-floppy-disk"></i> Update Entry
+                        {{else}}
+                            <i class="fa-solid fa-check"></i> Save Entry
+                        {{/if}}
+                    </button>
+                </form>
+            </div>
+
+            <hr class="section-divider">
+
+            <h3>📋 Milk Collection History</h3>
+
+            <div class="table-wrap">
+                <table class="data-table history-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Farmer ID</th>
+                            <th>Name</th>
+                            <th>Session</th>
+                            <th>Milk</th>
+                            <th>Liters</th>
+                            <th>FAT</th>
+                            <th>SNF</th>
+                            <th>Amount</th>
+                            <th>Source</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {{#each collections}}
+                        <tr>
+                            <td>{{dateString}}</td>
+                            <td>{{farmerId.farmerId}}</td>
+                            <td>{{farmerId.name}}</td>
+                            <td>{{session}}</td>
+                            <td>{{milkType}}</td>
+                            <td>{{liters}}</td>
+                            <td>{{fat}}</td>
+                            <td>{{snf}}</td>
+                            <td>₹{{totalAmount}}</td>
+                            <td>{{readingSource}}</td>
+                            <td class="action-buttons">
+                                <a href="/agent/edit-collection/{{_id}}" class="btn-edit">
+                                    ✏️ Edit
+                                </a>
+
+                                <form
+                                    action="/agent/delete-collection/{{_id}}"
+                                    method="POST"
+                                    class="inline-delete-form delete-collection-form"
+                                    data-confirm="Delete this entry?"
+                                >
+                                    <button type="submit" class="btn-delete">
+                                        🗑 Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="11" class="empty-state-cell">
+                                No milk collection records found.
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+(function () {
+    const el = {
+        toggleFormBtn: document.getElementById("toggleFormBtn"),
+        updateRatesBtn: document.getElementById("updateRatesBtn"),
+        baseRateCard: document.getElementById("baseRateCard"),
+        milkFormCard: document.getElementById("milkFormCard"),
+
+        rateMilkType: document.getElementById("rateMilkType"),
+        fatFrom: document.getElementById("fatFrom"),
+        fatTo: document.getElementById("fatTo"),
+        ratePerLiter: document.getElementById("ratePerLiter"),
+        effectiveFrom: document.getElementById("effectiveFrom"),
+        tsRate: document.getElementById("tsRate"),
+        updateFatPrice: document.getElementById("updateFatPrice"),
+        updateSnfPrice: document.getElementById("updateSnfPrice"),
+        saveSlabBtn: document.getElementById("saveSlabBtn"),
+        saveRatesBtn: document.getElementById("saveRatesBtn"),
+        fatSlabBody: document.getElementById("fatSlabBody"),
+
+        milkCollectionForm: document.getElementById("milkCollectionForm"),
+        farmerId: document.getElementById("farmerId"),
+        session: document.getElementById("session"),
+        milkType: document.getElementById("milkType"),
+        calcMethod: document.getElementById("calcMethod"),
+        manualEntry: document.getElementById("manualEntry"),
+        liters: document.getElementById("liters"),
+        fat: document.getElementById("fat"),
+        snf: document.getElementById("snf"),
+        rate: document.getElementById("rate"),
+        fatPrice: document.getElementById("fatPrice"),
+        snfPrice: document.getElementById("snfPrice"),
+        totalAmount: document.getElementById("totalAmount"),
+        baseRateGroup: document.getElementById("baseRateGroup"),
+        fatRateGroup: document.getElementById("fatRateGroup"),
+        snfRateGroup: document.getElementById("snfRateGroup")
+    };
+
+    let currentEditingSlabId = null;
+    let latestMachineReading = null;
+
+    function toNumber(value) {
+        const num = parseFloat(value);
+        return Number.isFinite(num) ? num : 0;
+    }
+
+    function setVisible(node, show) {
+        if (!node) return;
+        node.classList.toggle("hidden", !show);
+        node.classList.toggle("visible", show);
+    }
+
+    function resetRateFields() {
+        if (el.rate) el.rate.value = "";
+        if (el.fatPrice) el.fatPrice.value = "";
+        if (el.snfPrice) el.snfPrice.value = "";
+    }
+
+    function clearAmount() {
+        if (el.totalAmount) el.totalAmount.value = "";
+    }
+
+    function toggleFormCard() {
+        if (!el.milkFormCard) return;
+        const isHidden = el.milkFormCard.classList.contains("hidden");
+        setVisible(el.milkFormCard, isHidden);
+    }
+
+    function toggleBaseRateCard() {
+        if (!el.baseRateCard) return;
+        const isHidden = el.baseRateCard.classList.contains("hidden");
+        setVisible(el.baseRateCard, isHidden);
+    }
+
+    function updateCalcMethodUI() {
+        if (!el.calcMethod) return;
+
+        const method = el.calcMethod.value;
+
+        if (method === "dynamicTS") {
+            setVisible(el.baseRateGroup, true);
+            setVisible(el.fatRateGroup, false);
+            setVisible(el.snfRateGroup, false);
+        } else if (method === "twoAxis") {
+            setVisible(el.baseRateGroup, false);
+            setVisible(el.fatRateGroup, true);
+            setVisible(el.snfRateGroup, true);
+        } else if (method === "fatBased") {
+            setVisible(el.baseRateGroup, true);
+            setVisible(el.fatRateGroup, false);
+            setVisible(el.snfRateGroup, false);
+        }
+    }
+
+    function setManualMode(enabled) {
+        const fields = [el.liters, el.fat, el.snf];
+
+        fields.forEach((field) => {
+            if (!field) return;
+            field.readOnly = !enabled;
+            field.classList.toggle("readonly-manual-enabled", enabled);
+        });
+    }
+
+    function calculateTotalAmount() {
+        if (!el.calcMethod || !el.liters || !el.fat || !el.snf || !el.totalAmount) return;
+
+        const liters = toNumber(el.liters.value);
+        const fat = toNumber(el.fat.value);
+        const snf = toNumber(el.snf.value);
+        const method = el.calcMethod.value;
+
+        let totalAmount = 0;
+
+        if (method === "dynamicTS") {
+            const baseRateFactor = toNumber(el.rate?.value);
+            const weightKgs = liters * 1.03;
+            const fatKgs = (weightKgs * fat) / 100;
+            const snfKgs = (weightKgs * snf) / 100;
+            const tsKgs = fatKgs + snfKgs;
+            const ratePerLiter = tsKgs * baseRateFactor;
+            totalAmount = weightKgs * ratePerLiter;
+        } else if (method === "twoAxis") {
+            const fatRate = toNumber(el.fatPrice?.value);
+            const snfRate = toNumber(el.snfPrice?.value);
+            const weightKgs = liters * 1.03;
+            const fatKgs = (weightKgs * fat) / 100;
+            const snfKgs = (weightKgs * snf) / 100;
+            totalAmount = (fatKgs * fatRate) + (snfKgs * snfRate);
+        } else if (method === "fatBased") {
+            const rate = toNumber(el.rate?.value);
+            totalAmount = liters * rate;
+        }
+
+        el.totalAmount.value = totalAmount > 0 ? totalAmount.toFixed(2) : "0.00";
+    }
+
+    async function safeJsonFetch(url, options = {}) {
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        return response.json();
+    }
+
+    async function loadRates() {
+        if (!el.milkType || !el.calcMethod) return;
+
+        const milkType = el.milkType.value;
+        const method = el.calcMethod.value;
+
+        resetRateFields();
+        clearAmount();
+
+        try {
+            const data = await safeJsonFetch(`/agent/base-rate/${encodeURIComponent(milkType)}`);
+
+            if (method === "dynamicTS") {
+                if (el.rate) el.rate.value = data.tsRate || 0;
+            } else if (method === "twoAxis") {
+                if (el.fatPrice) el.fatPrice.value = data.fatPrice || 0;
+                if (el.snfPrice) el.snfPrice.value = data.snfPrice || 0;
+            } else if (method === "fatBased") {
+                if (el.rate) el.rate.value = "";
+            }
+
+            if (method === "fatBased") {
+                await loadFatRate();
+            } else {
+                calculateTotalAmount();
+            }
+        } catch (error) {
+            console.error("Failed to load base rates:", error);
+        }
+    }
+
+    async function loadFatRate() {
+        if (!el.milkType || !el.fat || !el.rate) return;
+
+        const milkType = el.milkType.value;
+        const fat = toNumber(el.fat.value);
+
+        if (!fat || fat <= 0) {
+
+    el.rate.value = "";
+    el.totalAmount.value = "";
+
+    return;
+}
+
+        try {
+
+    const data = await safeJsonFetch(
+        `/agent/fat-rate?milkType=${encodeURIComponent(milkType)}&fat=${encodeURIComponent(fat)}`
+    );
+
+    if (data.rate > 0) {
+
+        el.rate.value = data.rate;
+
+    } else {
+
+        alert(
+            `No FAT Rate Chart configured for FAT ${fat} and Milk Type ${milkType}`
+        );
+
+        el.rate.value = "";
+    }
+
+    calculateTotalAmount();
+
+} catch (error) {
+
+    console.error(
+        "Failed to load fat-based rate:",
+        error
+    );
+
+    el.rate.value = "";
+
+    calculateTotalAmount();
+}
+    }
+    async function loadRateEditorValues() {
+        if (!el.rateMilkType) return;
+
+        try {
+            const milkType = el.rateMilkType.value;
+            const data = await safeJsonFetch(`/agent/base-rate/${encodeURIComponent(milkType)}`);
+
+            if (el.tsRate) el.tsRate.value = data.tsRate || "";
+            if (el.updateFatPrice) el.updateFatPrice.value = data.fatPrice || "";
+            if (el.updateSnfPrice) el.updateSnfPrice.value = data.snfPrice || "";
+
+            await loadFatSlabs();
+        } catch (error) {
+            console.error("Failed to load rate editor values:", error);
+        }
+    }
+
+    async function saveRates() {
+        if (!el.rateMilkType) return;
+
+        const payload = {
+            milkType: el.rateMilkType.value,
+            tsRate: toNumber(el.tsRate?.value),
+            fatPrice: toNumber(el.updateFatPrice?.value),
+            snfPrice: toNumber(el.updateSnfPrice?.value)
+        };
+
+        try {
+            await safeJsonFetch("/agent/base-rate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            alert("Rates saved successfully.");
+            await loadRates();
+        } catch (error) {
+            console.error("Failed to save base rates:", error);
+            alert("Failed to save rates.");
+        }
+    }
+
+    function validateSlabInputs() {
+        const fatFrom = toNumber(el.fatFrom?.value);
+        const fatTo = toNumber(el.fatTo?.value);
+        const ratePerLiter = toNumber(el.ratePerLiter?.value);
+        const effectiveFrom = el.effectiveFrom?.value || "";
+
+        if (!el.rateMilkType || !effectiveFrom) {
+            alert("Please fill all slab fields.");
+            return false;
+        }
+
+        if (fatFrom < 0 || fatTo < 0 || ratePerLiter < 0) {
+            alert("Values cannot be negative.");
+            return false;
+        }
+
+        if (fatFrom > fatTo) {
+            alert("FAT From cannot be greater than FAT To.");
+            return false;
+        }
+
+        return true;
+    }
+
+    async function saveSlab() {
+        if (!validateSlabInputs()) return;
+
+        const payload = {
+            milkType: el.rateMilkType.value,
+            fatFrom: toNumber(el.fatFrom.value),
+            fatTo: toNumber(el.fatTo.value),
+            rate: toNumber(el.ratePerLiter.value),
+            effectiveFrom: el.effectiveFrom.value
+        };
+
+        if (currentEditingSlabId) {
+            payload.id = currentEditingSlabId;
+        }
+
+        try {
+            await safeJsonFetch("/agent/fat-rate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            alert(currentEditingSlabId ? "FAT slab updated successfully." : "FAT slab saved successfully.");
+            resetSlabForm();
+            await loadFatSlabs();
+            await loadRates();
+        } catch (error) {
+            console.error("Failed to save FAT slab:", error);
+            alert("Failed to save FAT slab.");
+        }
+    }
+
+    function resetSlabForm() {
+        currentEditingSlabId = null;
+        if (el.fatFrom) el.fatFrom.value = "";
+        if (el.fatTo) el.fatTo.value = "";
+        if (el.ratePerLiter) el.ratePerLiter.value = "";
+        if (el.effectiveFrom) el.effectiveFrom.value = "";
+        if (el.saveSlabBtn) el.saveSlabBtn.textContent = "💾 Save FAT Slab";
+    }
+
+    function buildSlabRow(slab) {
+        const tr = document.createElement("tr");
+
+        const fromTd = document.createElement("td");
+        fromTd.textContent = slab.fromFat ?? "";
+
+        const toTd = document.createElement("td");
+        toTd.textContent = slab.toFat ?? "";
+
+        const rateTd = document.createElement("td");
+        rateTd.textContent = `₹${slab.rate ?? 0}`;
+
+        const actionTd = document.createElement("td");
+        actionTd.className = "action-buttons";
+
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "btn-slab-edit";
+        editBtn.textContent = "✏️ Edit";
+        editBtn.addEventListener("click", function () {
+            startEditSlab(slab);
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.className = "btn-slab-delete";
+        deleteBtn.textContent = "🗑 Delete";
+        deleteBtn.addEventListener("click", function () {
+            deleteSlab(slab._id);
+        });
+
+        actionTd.appendChild(editBtn);
+        actionTd.appendChild(deleteBtn);
+
+        tr.appendChild(fromTd);
+        tr.appendChild(toTd);
+        tr.appendChild(rateTd);
+        tr.appendChild(actionTd);
+
+        return tr;
+    }
+
+    async function loadFatSlabs() {
+        if (!el.rateMilkType || !el.fatSlabBody) return;
+
+        try {
+            const milkType = el.rateMilkType.value;
+            const slabs = await safeJsonFetch(`/agent/fat-rates/${encodeURIComponent(milkType)}`);
+
+            el.fatSlabBody.innerHTML = "";
+
+            if (!Array.isArray(slabs) || slabs.length === 0) {
+                const tr = document.createElement("tr");
+                const td = document.createElement("td");
+                td.colSpan = 4;
+                td.className = "empty-state-cell";
+                td.textContent = "No FAT slabs found.";
+                tr.appendChild(td);
+                el.fatSlabBody.appendChild(tr);
+                return;
+            }
+
+            slabs.forEach((slab) => {
+                el.fatSlabBody.appendChild(buildSlabRow(slab));
+            });
+        } catch (error) {
+            console.error("Failed to load FAT slabs:", error);
+        }
+    }
+
+    function startEditSlab(slab) {
+        currentEditingSlabId = slab._id || null;
+
+        if (el.fatFrom) el.fatFrom.value = slab.fromFat ?? "";
+        if (el.fatTo) el.fatTo.value = slab.toFat ?? "";
+        if (el.ratePerLiter) el.ratePerLiter.value = slab.rate ?? "";
+        if (el.effectiveFrom && slab.effectiveFrom) {
+            el.effectiveFrom.value = String(slab.effectiveFrom).slice(0, 10);
+        }
+
+        if (el.saveSlabBtn) {
+            el.saveSlabBtn.textContent = "💾 Update FAT Slab";
+        }
+    }
+
+    async function deleteSlab(id) {
+        if (!id) return;
+
+        const ok = window.confirm("Delete this FAT slab?");
+        if (!ok) return;
+
+        try {
+            await safeJsonFetch(`/agent/fat-rate/${encodeURIComponent(id)}`, {
+                method: "DELETE"
+            });
+
+            alert("FAT slab deleted successfully.");
+            resetSlabForm();
+            await loadFatSlabs();
+            await loadRates();
+        } catch (error) {
+            console.error("Failed to delete FAT slab:", error);
+            alert("Failed to delete FAT slab.");
+        }
+    }
+
+    function bindDeleteCollectionConfirmations() {
+        const forms = document.querySelectorAll(".delete-collection-form");
+
+        forms.forEach((form) => {
+            form.addEventListener("submit", function (event) {
+                const message = form.getAttribute("data-confirm") || "Are you sure?";
+                const ok = window.confirm(message);
+
+                if (!ok) {
+                    event.preventDefault();
+                }
+            });
+        });
+    }
+
+    function bindCalculationEvents() {
+        [el.liters, el.fat, el.snf, el.fatPrice, el.snfPrice, el.rate].forEach((node) => {
+            if (!node) return;
+            node.addEventListener("input", calculateTotalAmount);
+        });
+
+        if (el.fat) {
+            el.fat.addEventListener("input", function () {
+                if (el.calcMethod?.value === "fatBased") {
+                    loadFatRate();
+                }
+            });
+        }
+
+        if (el.calcMethod) {
+    el.calcMethod.addEventListener("change", async function () {
+
+        updateCalcMethodUI();
+
+        if (el.calcMethod.value === "fatBased") {
+            await loadFatRate();
+        } else {
+            await loadRates();
+        }
+    });
+}
+
+        if (el.milkType) {
+    el.milkType.addEventListener("change", async function () {
+
+        if (el.calcMethod?.value === "fatBased") {
+            await loadFatRate();
+        } else {
+            await loadRates();
+        }
+    });
+}
+    }
+
+    function bindManualEntry() {
+        if (!el.manualEntry) return;
+
+        el.manualEntry.addEventListener("change", function () {
+            const enabled = el.manualEntry.checked;
+            setManualMode(enabled);
+
+            if (enabled) {
+                alert("Manual entry enabled. Please enter liters, FAT, and SNF manually.");
+            } else if (latestMachineReading) {
+                if (el.liters) el.liters.value = latestMachineReading.liters ?? "";
+                if (el.fat) el.fat.value = latestMachineReading.fat ?? "";
+                if (el.snf) el.snf.value = latestMachineReading.snf ?? "";
+                if (el.calcMethod?.value === "fatBased") {
+                    loadFatRate();
+                } else {
+                    calculateTotalAmount();
+                }
+            }
+        });
+    }
+
+    function bindRateEditor() {
+        if (el.updateRatesBtn) {
+            el.updateRatesBtn.addEventListener("click", async function () {
+                toggleBaseRateCard();
+                if (!el.baseRateCard.classList.contains("hidden")) {
+                    await loadRateEditorValues();
+                }
+            });
+        }
+
+        if (el.saveRatesBtn) {
+            el.saveRatesBtn.addEventListener("click", saveRates);
+        }
+
+        if (el.saveSlabBtn) {
+            el.saveSlabBtn.addEventListener("click", saveSlab);
+        }
+
+        if (el.rateMilkType) {
+            el.rateMilkType.addEventListener("change", loadRateEditorValues);
+        }
+    }
+
+    function bindFormToggle() {
+        if (!el.toggleFormBtn) return;
+        el.toggleFormBtn.addEventListener("click", toggleFormCard);
+    }
+
+    function bindFarmerSelection() {
+        if (!el.farmerId) return;
+
+        el.farmerId.addEventListener("change", function () {
+            // Existing flow kept as-is
+        });
+    }
+
+    function initSocket() {
+        if (typeof io === "undefined") return;
+
+        const socket = io();
+
+        socket.on("milk-reading", async function (data) {
+            if (!data || el.manualEntry?.checked) return;
+
+            latestMachineReading = data;
+
+            if (el.liters) el.liters.value = data.liters ?? "";
+            if (el.fat) el.fat.value = data.fat ?? "";
+            if (el.snf) el.snf.value = data.snf ?? "";
+
+            if (el.calcMethod?.value === "fatBased") {
+                await loadFatRate();
+            } else {
+                calculateTotalAmount();
+            }
+        });
+
+        socket.on("disconnect", function () {
+            if (el.manualEntry?.checked) return;
+
+            if (el.liters) el.liters.value = "";
+            if (el.fat) el.fat.value = "";
+            if (el.snf) el.snf.value = "";
+            if (el.totalAmount) el.totalAmount.value = "";
+
+            alert("Machine disconnected. You can enable manual entry if needed.");
+        });
+    }
+
+    async function initialize() {
+        bindFormToggle();
+        bindRateEditor();
+        bindManualEntry();
+        bindCalculationEvents();
+        bindDeleteCollectionConfirmations();
+        bindFarmerSelection();
+
+        updateCalcMethodUI();
+        setManualMode(false);
+        initSocket();
+
+        if (el.milkType && el.calcMethod) {
+            await loadRates();
+        }
+    }
+
+    initialize();
+})();
+</script>
+</body>
+</html>

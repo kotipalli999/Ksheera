@@ -1,0 +1,432 @@
+/* ==========================================
+   🎨 GLOBAL VARIABLES & THEME SETUP
+   ========================================== */
+:root {
+    --forest-green: #1B4332;       /* మెయిన్ సైడ్‌బార్ & హెడర్స్ */
+    --mid-green: #2D6A4F;          /* బటన్స్ & యాక్టివ్ ట్యాబ్స్ */
+    --lime-green: #52B788;         /* హైలైట్స్ & బటన్ హోవర్ */
+    --soft-lime: #D8F3DC;          /* లైట్ గ్రీన్ అలర్ట్స్ / హైలైట్స్ */
+    --cream-bg: #FDFBF7;           /* మెయిన్ బాడీ బ్యాక్‌గ్రౌండ్ */
+    --white: #FFFFFF;              /* కార్డ్స్ & టేబుల్ బ్యాక్‌గ్రౌండ్ */
+    --text-dark: #2D3748;          /* టెక్స్ట్ కలర్ */
+    --text-muted: #718096;         /* సబ్-టెక్స్ట్ కలర్ */
+    --border: #E2E8F0;             /* లైట్ బార్డర్ */
+    --radius: 12px;                /* రౌండెడ్ కార్నర్స్ */
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); /* సాఫ్ట్ షాడో */
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--cream-bg);
+    color: var(--text-dark);
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ==========================================
+   📁 1. SIDEBAR PANEL (Forest Green)
+   ========================================== */
+.sidebar {
+    width: 260px;
+    background-color: var(--forest-green);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.sidebar .logo {
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .logo h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.sidebar .logo p {
+    font-size: 13px;
+    color: var(--lime-green);
+    font-weight: 500;
+}
+
+.sidebar .menu {
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+}
+
+.sidebar .menu a {
+    color: #D8F3DC;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Hover and Active Menu States */
+.sidebar .menu a:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    padding-left: 20px;
+}
+
+.sidebar .menu a.active {
+    background-color: var(--mid-green);
+    color: var(--white);
+    border-left: 4px solid var(--lime-green);
+    font-weight: 600;
+}
+
+.sidebar .menu a.logout {
+    margin-top: 20px;
+    background-color: rgba(220, 38, 38, 0.1);
+    color: #FCA5A5;
+}
+
+.sidebar .menu a.logout:hover {
+    background-color: #DC2626;
+    color: var(--white);
+}
+
+/* ==========================================
+   💻 2. MAIN CONTENT AREA
+   ========================================== */
+.main-content {
+    margin-left: 260px; /* సైడ్‌బార్ స్పేస్ */
+    padding: 40px;
+    width: calc(100% - 260px);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 26px;
+    color: var(--forest-green);
+    font-weight: 700;
+}
+
+/* ==========================================
+   ✨ CARDS & CONTAINERS (Soft Shadows)
+   ========================================== */
+.card {
+    background-color: var(--white);
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.card h2 {
+    font-size: 20px;
+    color: var(--forest-green);
+}
+
+/* ==========================================
+   📝 FORM ELEMENT STYLES
+   ========================================== */
+#farmerFormCard {
+    background: var(--cream-bg);
+    padding: 25px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin-top: 15px;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--mid-green);
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background-color: var(--white);
+    color: var(--text-dark);
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+/* Input Focus Effect */
+.form-group input:focus, 
+.form-group select:focus {
+    outline: none;
+    border-color: var(--mid-green);
+    box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.15);
+}
+
+/* Readonly Field (Auto Generated text) */
+.form-group input[readonly] {
+    background-color: #EDF2F7;
+    color: var(--text-muted);
+    font-weight: 500;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   📊 PROFESSIONAL TABLE STYLES
+   ========================================== */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+table th {
+    background-color: var(--soft-lime);
+    color: var(--forest-green);
+    font-weight: 700;
+    text-align: left;
+    padding: 14px 18px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Rounded corners for Table Header */
+table th:first-child { border-top-left-radius: 8px; }
+table th:last-child { border-top-right-radius: 8px; }
+
+table td {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dark);
+    font-size: 15px;
+}
+
+/* Table Row Hover effect */
+table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+table tbody tr:hover {
+    background-color: rgba(216, 243, 220, 0.2); /* Soft Lime tint */
+}
+
+/* Status Badge */
+table td span {
+    background-color: #E6F4EA;
+    color: #137333 !important;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+/* ==========================================
+   🟩 BUTTON STYLES (Forest & Lime Green)
+   ========================================== */
+.filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--mid-green);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(45, 106, 79, 0.2);
+}
+
+.filter-btn:hover {
+    background-color: var(--forest-green);
+    box-shadow: 0 4px 12px rgba(27, 67, 50, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Add Farmer Button Specific styling if needed */
+#addFarmerBtn {
+    background-color: var(--lime-green);
+    color: var(--forest-green);
+}
+
+#addFarmerBtn:hover {
+    background-color: var(--mid-green);
+    color: var(--white);
+}
+
+/* Action Buttons inside Table (Edit/Delete overrides) */
+table .filter-btn {
+    margin-right: 5px;
+    font-weight: 500;
+    box-shadow: none;
+}
+
+table .filter-btn:hover {
+    transform: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+/* Responsive Scaling for smaller screens */
+@media (max-width: 992px) {
+    .sidebar { width: 70px; }
+    .sidebar .logo h2, .sidebar .logo p, .sidebar .menu a span { display: none; }
+    .main-content { margin-left: 70px; width: calc(100% - 70px); padding: 20px; }
+    #farmerFormCard div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+}
+/*mobile responsive*/
+/* ==========================================
+   📱 додаткові RESPONSIVE STYLES (MOBILE & TABLET)
+   ========================================== */
+
+/* టాబ్లెట్ మరియు మొబైల్ స్క్రీన్స్ కోసం సాధారణ సర్దుబాట్లు */
+@media (max-width: 992px) {
+    body {
+        min-height: auto;
+    }
+    
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+}
+
+/* చిన్న మొబైల్ స్క్రీన్స్ కోసం (స్మార్ట్‌ఫోన్లు) */
+@media (max-width: 576px) {
+    body {
+        flex-direction: column; /* సైడ్‌బార్, మెయిన్ కంటెంట్ ఒకదాని కింద ఒకటి రావడానికి */
+    }
+
+    .sidebar {
+        width: 100% !important;
+        height: auto !important;
+        position: relative !important;
+        padding: 10px 0;
+    }
+
+    .sidebar .logo {
+        padding: 10px 15px;
+        border-bottom: none;
+        text-align: center;
+    }
+
+    .sidebar .logo h2 {
+        display: block !important; /* లోగో పేరు మొబైల్‌లో కనిపించేలా */
+        font-size: 18px;
+    }
+
+    .sidebar .logo p {
+        display: block !important;
+        font-size: 12px;
+    }
+
+    .sidebar .menu {
+        flex-direction: row !important; /* లింకులు అడ్డంగా మారతాయి */
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px;
+    }
+
+    .sidebar .menu a {
+        padding: 8px 12px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+
+    .sidebar .menu a span {
+        display: inline !important; /* ఐకాన్స్ పక్కన టెక్స్ట్ మొబైల్‌లో కనిపించడానికి */
+    }
+
+    .sidebar .menu a:hover {
+        padding-left: 12px; /* మొబైల్‌లో లెఫ్ట్ ప్యాడింగ్ యానిమేషన్ తొలగింపు */
+    }
+
+    .sidebar .menu a.active {
+        border-left: none;
+        border-bottom: 3px solid var(--lime-green); /* లెఫ్ట్ బోర్డర్ కిందకు మారుతుంది */
+    }
+
+    .sidebar .menu a.logout {
+        margin-top: 0; /* లాగౌట్ బటన్ మిగతా లింకులతో కలిసిపోతుంది */
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 15px;
+    }
+
+    /* ఫారమ్ ఎలిమెంట్స్ సర్దుబాటు */
+    .form-group input, 
+    .form-group select {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    /* యాక్షన్ బటన్స్ మొబైల్‌లో ఒకదాని కింద ఒకటి రావడానికి */
+    table .filter-btn {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+    
+    table td:last-child {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}

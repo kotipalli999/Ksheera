@@ -1,0 +1,358 @@
+/* ==========================================
+   1. ROOT COLORS (డైరీ & అగ్రి థీమ్ వేరియబుల్స్)
+   ========================================== */
+:root {
+    --primary-dark: #14532D;    /* డార్క్ ఫారెస్ట్ గ్రీన్ */
+    --primary: #15803D;         /* ఫారెస్ట్ గ్రీన్ */
+    --secondary: #84CC16;       /* లైమ్ గ్రీన్ */
+    --accent-cream: #FEFCE8;    /* లైట్ క్రీమ్ ఎల్లో */
+    --bg-color: #F8FAFC;        /* లైట్ బ్యాక్‌గ్రౌండ్ */
+    --card-bg: #FFFFFF;
+    --text-main: #1E293B;
+    --text-muted: #64748B;
+    --border: #E2E8F0;
+}
+
+/* --- గ్లోబల్ రీసెట్ --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+    display: flex;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+}
+
+/* ==========================================
+   2. సైడ్‌బార్ ప్యానెల్ (గ్రీన్ గ్రేడియంట్ థీమ్)
+   ========================================== */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: linear-gradient(180deg, var(--primary-dark), var(--primary));
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.08);
+}
+
+.sidebar .logo {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 24px;
+}
+
+.sidebar .logo h2 {
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+.sidebar .logo p {
+    font-size: 12px;
+    color: #D9F99D; /* లైట్ లైమ్ కలర్ టెక్స్ట్ */
+    margin-top: 4px;
+}
+
+.sidebar .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    height: 100%;
+}
+
+.sidebar .menu a {
+    color: #DCFCE7;
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
+
+.sidebar .menu a:hover,
+.sidebar .menu a.active {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+    transform: translateX(4px);
+}
+
+.sidebar .menu a.active {
+    background-color: var(--secondary);
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.sidebar .menu .logout {
+    margin-top: auto;
+    background-color: #EF4444;
+    color: #fff;
+}
+
+.sidebar .menu .logout:hover {
+    background-color: #DC2626;
+}
+
+/* ==========================================
+   3. మెయిన్ లేఅవుట్ స్ట్రక్చర్
+   ========================================== */
+.main-content {
+    margin-left: 260px;
+    flex: 1;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 1400px;
+}
+
+/* ==========================================
+   4. హెడర్ & ప్రొఫైల్ కార్డ్
+   ========================================== */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.header-title h1 {
+    font-size: 26px;
+    color: var(--primary-dark);
+    font-weight: 700;
+}
+
+.welcome-text {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.profile-card-horizontal {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: var(--card-bg);
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    border: 1px solid var(--border);
+}
+
+.agent-avatar {
+    position: relative;
+    width: 48px;
+    height: 48px;
+}
+
+.agent-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background-color: var(--secondary); /* లైమ్ గ్రీన్ ఆన్లైన్ ఇండికేటర్ */
+}
+
+.agent-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-row-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.agent-name {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.badge {
+    background-color: var(--accent-cream);
+    color: var(--primary);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-weight: 600;
+    border: 1px solid #FEF08A;
+}
+
+.info-row-bottom {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* ==========================================
+   5. కార్డ్స్ గ్రిడ్ (Stats Cards)
+   ========================================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.stat-card {
+    background-color: var(--card-bg);
+    padding: 24px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+}
+
+.stat-info h3 {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.stat-info p {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.stat-icon {
+    font-size: 24px;
+    color: var(--primary);
+    background-color: #F0FDF4;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+/* బోర్డర్ ఎఫెక్ట్స్ */
+.total-milk { border-left: 5px solid var(--primary-dark); }
+.farmers { border-left: 5px solid var(--primary); }
+.amount { border-left: 5px solid var(--secondary); }
+
+/* ==========================================
+   6. సెషన్ కార్డ్స్ (Morning vs Evening)
+   ========================================== */
+.session-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+}
+
+.session-card {
+    background-color: var(--card-bg);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+}
+
+.session-title {
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* సెషన్స్ కలర్ డెకరేషన్ */
+.session-title.morning { color: var(--primary); }
+.session-title.evening { color: var(--secondary); }
+
+.session-data {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    font-size: 14px;
+    border-bottom: 1px dashed var(--border);
+}
+
+.session-data:last-child {
+    border-bottom: none;
+}
+
+.session-data span:first-child {
+    color: var(--text-muted);
+}
+
+.session-data span:last-child {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* క్రీమ్ యాక్సెంట్ ఇన్పుట్ మరియు టేబుల్ హెడర్ స్టైలింగ్స్ కోసం */
+input[type="date"], th {
+    background-color: var(--accent-cream) !important;
+}
+
+/* ==========================================
+   7. రెస్పాన్సివ్ బ్రేక్‌పాయింట్స్ (Mobile View)
+   ========================================== */
+@media (max-width: 1024px) {
+    body {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 16px;
+    }
+    .sidebar .logo {
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+    }
+    .sidebar .menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .sidebar .menu a {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    .sidebar .menu .logout {
+        margin-top: 0;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 16px;
+        gap: 20px;
+    }
+}

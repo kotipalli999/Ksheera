@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmers Management</title>
+    <!-- డ్యాష్‌బోర్డ్ మెనూ CSS మరియు ఫార్మర్ CSS లింకులు -->
+    <link rel="stylesheet" href="/farmer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- 1. సైడ్‌బార్ ప్యానెల్ (యాక్టివ్ ట్యాబ్ మార్చబడింది) -->
+    <div class="sidebar">
+        <div class="logo">
+            <h2>🥛 Ksheera Accounting</h2>
+            <p>Collection Agent</p>
+        </div>
+        <div class="menu">
+            <a href="/collectionagentdashboardmenu">📊 Dashboard</a>
+            <a href="/agent/profile">👤 Profile</a>
+            <a href="/agent/farmers" class="active">🚜 Farmers</a>
+            <a href="/agent/collections">🥛 Milk Collection</a>
+            <a href="/agent/farmer-ledger">📒 Farmers Ledger</a>
+            <a href="/agent/payments">💰 Payment Reports</a>
+            <a href="/agent/payment-transactions">📈 Payment Transactions</a>
+            <a href="/agent/device-status">🖥️ Device Status</a>
+            <a href="/agent/settings">⚙️ Settings</a>
+            <a href="/logout" class="logout">🚪 Logout</a>
+        </div>
+    </div>
+
+    <!-- 2. మెయిన్ కంటెంట్ -->
+    <div class="main-content">
+        <header>
+            <h1>🚜 Farmers Management</h1>
+            <!-- ⬅️ డ్యాష్‌బోర్డ్‌కు వెళ్లే బ్యాక్ బటన్ -->
+           <a href="/collectionagentdashboardmenu"
+   class="filter-btn"
+   style="text-decoration: none; background: #64748B;">
+    <i class="fa-solid fa-arrow-left"></i>
+    Back to Dashboard
+</a>
+</header>
+
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h2>{{#if farmer}}✏️ Edit Farmer Details{{else}}👥 Registered Farmers{{/if}}</h2>
+                <button type="button" id="addFarmerBtn" class="filter-btn">
+                    <i class="fa-solid fa-user-plus"></i> Add Farmer
+                </button>
+            </div>
+
+            <!-- Farmer Form Card -->
+            <div id="farmerFormCard" style="{{#if farmer}}display:block;{{else}}display:none;{{/if}}">
+                {{#if farmer}}
+                <form action="/agent/update-farmer/{{farmer._id}}" method="POST">
+                {{else}}
+                <form action="/agent/farmers" method="POST">
+                {{/if}}
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group">
+    <label>Farmer ID</label>
+    <input
+        type="text"
+        value="{{#if farmer}}{{farmer.farmerId}}{{else}}Auto Generated{{/if}}"
+        readonly
+    >
+</div>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" name="name" value="{{farmer.name}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" name="username" value="{{farmer.username}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" name="password" placeholder="Enter Password" {{#unless farmer}}required{{/unless}}>
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile</label>
+                            <input type="text" name="mobile" value="{{farmer.mobile}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Village</label>
+                            <input type="text" name="village" value="{{farmer.village}}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label>Preferred Milk Type</label>
+                        <select name="preferredMilkType" required style="width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border);">
+                            <option value="Cow" {{#if (eq farmer.preferredMilkType "Cow")}}selected{{/if}}>🐄 Cow</option>
+                            <option value="Buffalo" {{#if (eq farmer.preferredMilkType "Buffalo")}}selected{{/if}}>🐃 Buffalo</option>
+                            <option value="Both" {{#if (eq farmer.preferredMilkType "Both")}}selected{{/if}}>🥛 Both</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="filter-btn">
+                        {{#if farmer}}<i class="fa-solid fa-floppy-disk"></i> Update Farmer{{else}}<i class="fa-solid fa-check"></i> Save Farmer{{/if}}
+                    </button>
+                </form>
+            </div>
+
+            <hr style="margin: 25px 0; border: 0; border-top: 1px solid var(--border);">
+
+            <!-- Farmers List Table -->
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Village</th>
+                            <th>Milk Type</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each farmers}}
+                        <tr>
+                            <td><b>{{this.farmerId}}</b></td>
+                            <td>{{this.name}}</td>
+                            <td>{{this.mobile}}</td>
+                            <td>{{this.village}}</td>
+                            <td>{{this.preferredMilkType}}</td>
+                            <td><span style="color: green; font-weight: bold;">{{this.status}}</span></td>
+                            <td>
+                                <a href="/agent/edit-farmer/{{this._id}}" class="filter-btn" style="padding: 5px 10px; font-size: 12px; text-decoration: none; background: #F59E0B;">✏️ Edit</a>
+                                <a href="/agent/delete-farmer/{{this._id}}" class="filter-btn" style="padding: 5px 10px; font-size: 12px; text-decoration: none; background: #DC2626;" onclick="return confirm('Delete {{this.name}}?')">🗑 Delete</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        {{#unless farmers}}
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: #64748B;">No farmers found. Click 'Add Farmer' to create one.</td>
+                        </tr>
+                        {{/unless}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const addFarmerBtn = document.getElementById("addFarmerBtn");
+        const farmerFormCard = document.getElementById("farmerFormCard");
+
+        /* ➕ Add Farmer బటన్ టోగుల్ లాజిక్ */
+        if (addFarmerBtn && farmerFormCard) {
+            addFarmerBtn.addEventListener("click", function () {
+                if (farmerFormCard.style.display === "block") {
+                    farmerFormCard.style.display = "none";
+                } else {
+                    farmerFormCard.style.display = "block";
+                    farmerFormCard.scrollIntoView({ behavior: "smooth" });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

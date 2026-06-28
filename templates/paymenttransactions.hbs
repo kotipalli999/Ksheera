@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Transactions</title>
+    <link rel="stylesheet" href="/paymenttransactions.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+<!-- Top Navigation Bar (సైడ్‌బార్ స్థానంలో చేర్చబడింది) -->
+    <div class="top-navbar">
+        <div class="nav-logo">
+            <h2>🥛 Ksheera Accounting</h2>
+            <span class="agent-badge">Collection Agent</span>
+        </div>
+        <div class="nav-menu">
+            <a href="/collectionagentdashboardmenu">📊 Dashboard</a>
+            <a href="/agent/profile">👤 Profile</a>
+            <a href="/agent/farmers">🚜 Farmers</a>
+            <a href="/agent/collections">🥛 Milk Collection</a>
+            <a href="/agent/farmer-ledger">📒 Farmers Ledger</a>
+            <a href="/agent/payments">💰 Payments</a>
+            <a href="/agent/payment-transactions" class="active">📑 Payment Transactions</a>
+            <a href="/agent/device-status">🖥️ Device Status</a>
+            <a href="/agent/settings">⚙️ Settings</a>
+            <a href="/logout" class="logout">🚪 Logout</a>
+        </div>
+    </div>
+    <div class="main-content">
+
+    <div class="page-header">
+        <h2>💰 Payment Transactions</h2>
+    </div>
+
+    <div class="summary-cards">
+
+        <div class="card">
+            <h3>Total Transactions</h3>
+            <p>{{totalTransactions}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Amount Paid</h3>
+            <p>₹{{totalPaid}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Cash Payments</h3>
+            <p>₹{{cashPayments}}</p>
+        </div>
+
+        <div class="card">
+            <h3>UPI Payments</h3>
+            <p>₹{{upiPayments}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Bank Payments</h3>
+            <p>₹{{bankPayments}}</p>
+        </div>
+
+        <div class="card">
+            <h3>Cheque Payments</h3>
+            <p>₹{{chequePayments}}</p>
+        </div>
+
+    </div>
+
+    <!-- Filter Container -->
+        <div class="filter-container">
+            <input
+    type="text"
+    id="searchFarmer"
+    value="{{search}}"
+    placeholder="🔍 Search Farmer Name / Farmer ID">
+           <select id="paymentType" name="paymentType">
+    <option value="">All Payment Types</option>
+
+    <option value="Advance"
+        {{#ifEquals paymentType "Advance"}}selected{{/ifEquals}}>
+        Advance
+    </option>
+
+    <option value="Settlement"
+        {{#ifEquals paymentType "Settlement"}}selected{{/ifEquals}}>
+        Settlement
+    </option>
+
+    <option value="Bonus"
+        {{#ifEquals paymentType "Bonus"}}selected{{/ifEquals}}>
+        Bonus
+    </option>
+
+    <option value="Deduction"
+        {{#ifEquals paymentType "Deduction"}}selected{{/ifEquals}}>
+        Deduction
+    </option>
+</select>
+
+            <select id="paymentMethod" name="paymentMethod">
+    <option value="">All Methods</option>
+    <option value="Cash" {{#ifEquals paymentMethod "Cash"}}selected{{/ifEquals}}>Cash</option>
+    <option value="UPI" {{#ifEquals paymentMethod "UPI"}}selected{{/ifEquals}}>UPI</option>
+    <option value="Bank Transfer" {{#ifEquals paymentMethod "Bank Transfer"}}selected{{/ifEquals}}>Bank Transfer</option>
+    <option value="Cheque" {{#ifEquals paymentMethod "Cheque"}}selected{{/ifEquals}}>Cheque</option>
+</select>
+
+<select id="paymentStatus" name="paymentStatus">
+
+    <option value="">All Status</option>
+    <option value="Partial"
+        {{#ifEquals paymentStatus "Partial"}}selected{{/ifEquals}}>
+        Partial
+    </option>
+
+    <option value="Paid"
+        {{#ifEquals paymentStatus "Paid"}}selected{{/ifEquals}}>
+        Paid
+    </option>
+
+</select>
+           <input
+    type="date"
+    id="fromDate"
+    value="{{fromDate}}">
+           <input
+    type="date"
+    id="toDate"
+    value="{{toDate}}">
+
+            <button type="button" class="btn-search" id="btnSearch">
+    <i class="fa-solid fa-magnifying-glass"></i> Search
+</button>
+
+<button type="button" class="btn-reset" id="btnReset">
+    <i class="fa-solid fa-rotate"></i> Reset
+</button>
+
+<button type="button" class="btn-export" id="btnExport">
+    <i class="fa-solid fa-file-excel"></i> Export
+</button>
+
+<button type="button" class="btn-print" id="btnPrint">
+    <i class="fa-solid fa-print"></i> Print
+</button>
+ </div>
+
+        <!-- Transaction Table -->
+        <div class="table-responsive">
+            <table class="payment-table">
+                <thead>
+                    <tr>
+                        <th>Sl No</th>
+<th>Transaction No</th>
+<th>Date</th>
+<th>Farmer ID</th>
+<th>Farmer Name</th>
+<th>Payment Type</th>
+<th>Amount</th>
+<th>Method</th>
+<th>Status</th>
+<th>Remarks</th>
+<th>Actions</th>
+ </tr>
+                </thead>
+               <tbody id="transactionTableBody">
+
+{{#if transactions.length}}
+
+    {{#each transactions}}
+
+    <tr>
+
+        <td>{{inc @index}}</td>
+
+<td>{{transactionNumber}}</td>
+
+<td>{{formatDate paymentDate}}</td>
+        <td>
+            {{#if farmerId}}
+                {{farmerId.farmerId}}
+            {{else}}
+                -
+            {{/if}}
+        </td>
+
+        <td>
+            {{#if farmerId}}
+                {{farmerId.name}}
+            {{else}}
+                -
+            {{/if}}
+        </td>
+
+        <td>{{paymentType}}</td>
+
+        <td>₹{{transactionAmount}}</td>
+
+        <td>{{paymentMethod}}</td>
+
+        
+        <td>
+            <span class="status-badge {{paymentStatus}}">
+                {{paymentStatus}}
+            </span>
+        </td>
+
+        <td>
+            {{#if remarks}}
+                {{remarks}}
+            {{else}}
+                -
+            {{/if}}
+        </td>
+
+        <td class="action-buttons">
+
+            <button
+                type="button"
+                class="btn-view"
+                data-id="{{_id}}"
+                title="View Transaction">
+                <i class="fa-solid fa-eye"></i>
+            </button>
+            <button
+                type="button"
+                class="btn-delete"
+                data-id="{{_id}}"
+                title="Delete Transaction">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+
+        </td>
+
+    </tr>
+
+    {{/each}}
+
+{{else}}
+
+    <tr>
+        <td colspan="11" style="text-align:center;padding:20px;font-weight:bold;">
+            No Payment Transactions Found.
+        </td>
+    </tr>
+
+{{/if}}
+
+</tbody>
+</table>
+        </div>
+    </div>
+
+    <!-- Frontend Script Logic -->
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Search
+    document.getElementById("btnSearch")?.addEventListener("click", function () {
+
+        const params = new URLSearchParams();
+
+        const search =
+            document.getElementById("searchFarmer").value.trim();
+
+        const paymentType =
+            document.getElementById("paymentType").value;
+
+        const paymentMethod =
+            document.getElementById("paymentMethod").value;
+
+        const paymentStatus =
+            document.getElementById("paymentStatus").value;
+
+        const fromDate =
+            document.getElementById("fromDate").value;
+
+        const toDate =
+            document.getElementById("toDate").value;
+
+        if (search)
+            params.append("search", search);
+
+        if (paymentType)
+            params.append("paymentType", paymentType);
+
+        if (paymentMethod)
+            params.append("paymentMethod", paymentMethod);
+
+        if (paymentStatus)
+            params.append("paymentStatus", paymentStatus);
+
+        if (fromDate)
+            params.append("fromDate", fromDate);
+
+        if (toDate)
+            params.append("toDate", toDate);
+
+        window.location.href =
+            "/agent/payment-transactions?" +
+            params.toString();
+    });
+
+    // Enter Search
+    document.getElementById("searchFarmer")
+        ?.addEventListener("keypress", function (e) {
+
+        if (e.key === "Enter") {
+            document.getElementById("btnSearch").click();
+        }
+    });
+
+    // Reset Filters
+    document.getElementById("btnReset")
+        ?.addEventListener("click", function () {
+
+        window.location.href =
+            "/agent/payment-transactions";
+    });
+
+    // Export
+    document.getElementById("btnExport")
+?.addEventListener("click", function () {
+
+    const params = new URLSearchParams();
+
+    const search =
+        document.getElementById("searchFarmer").value.trim();
+
+    const paymentType =
+        document.getElementById("paymentType").value;
+
+    const paymentMethod =
+        document.getElementById("paymentMethod").value;
+
+    const paymentStatus =
+        document.getElementById("paymentStatus").value;
+
+    const fromDate =
+        document.getElementById("fromDate").value;
+
+    const toDate =
+        document.getElementById("toDate").value;
+
+    if (search)
+        params.append("search", search);
+
+    if (paymentType)
+        params.append("paymentType", paymentType);
+
+    if (paymentMethod)
+        params.append("paymentMethod", paymentMethod);
+
+    if (paymentStatus)
+        params.append("paymentStatus", paymentStatus);
+
+    if (fromDate)
+        params.append("fromDate", fromDate);
+
+    if (toDate)
+        params.append("toDate", toDate);
+
+    window.location.href =
+        "/agent/payment-transactions/export?" +
+        params.toString();
+});
+    // Print
+    document.getElementById("btnPrint")
+        ?.addEventListener("click", function () {
+
+        window.print();
+    });
+
+    // View Transaction
+    document.querySelectorAll(".btn-view")
+        .forEach(btn => {
+
+        btn.addEventListener("click", function () {
+
+            window.location.href =
+                "/agent/payment-transactions/view/" +
+                this.dataset.id;
+        });
+    });
+
+    // Delete Transaction
+    document.querySelectorAll(".btn-delete")
+        .forEach(btn => {
+
+        btn.addEventListener("click", function () {
+
+            const id = this.dataset.id;
+
+            if (
+                confirm(
+                    "Delete this transaction permanently?"
+                )
+            ) {
+
+                window.location.href =
+                    "/agent/payment-transactions/delete/" +
+                    id;
+            }
+        });
+    });
+
+});
+</script>
+</body>
+
+</html>

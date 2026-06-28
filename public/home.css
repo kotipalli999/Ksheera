@@ -1,0 +1,312 @@
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#F8FAFC;
+    color:#334155;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 50px;
+    background:#15803D;
+    box-shadow:0 2px 15px rgba(21,128,61,0.15);
+}
+
+.logo h2{
+    color:#fff;
+    font-size:1.8rem;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    list-style:none;
+}
+
+.nav-links a{
+    color:#fff;
+    text-decoration:none;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:#BEF264;
+}
+
+/* Login Button */
+
+.login-btn{
+    background:#FFFFFF;
+    color:#15803D !important;
+    padding:10px 16px;
+    border-radius:8px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.login-btn:hover{
+    background:#FEFCE8;
+    transform:translateY(-2px);
+    box-shadow:0 5px 15px rgba(0,0,0,0.12);
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero{
+    min-height:85vh;
+
+    background-image:
+        linear-gradient(
+            rgba(21,128,61,0.35),
+            rgba(132,204,22,0.30)
+        ),
+        url('../milk.jpg');
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.hero-content{
+    max-width:850px;
+    color:white;
+    padding:25px;
+
+    backdrop-filter:blur(6px);
+
+    background:
+    rgba(255,255,255,0.12);
+
+    border:1px solid
+    rgba(255,255,255,0.2);
+
+    border-radius:20px;
+
+    box-shadow:
+    0 20px 40px
+    rgba(0,0,0,0.15);
+}
+
+.hero-content h1{
+    font-size:3.5rem;
+    margin-bottom:20px;
+    font-weight:700;
+}
+
+.hero-content p{
+    font-size:1.2rem;
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+/* Hero Buttons */
+
+.hero-buttons{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    text-decoration:none;
+    padding:14px 30px;
+    border-radius:10px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+/* Primary Button */
+
+.primary{
+    background:#FFFFFF;
+    color:#15803D;
+}
+
+/* Secondary Button */
+
+.secondary{
+    background:#84CC16;
+    color:#fff;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+    box-shadow:
+    0 8px 20px
+    rgba(0,0,0,0.15);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    background:#14532D;
+    color:#fff;
+    padding-top:50px;
+}
+
+.footer-container{
+    max-width:1200px;
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+
+    gap:30px;
+    padding:0 20px 40px;
+}
+
+.footer-box h3{
+    margin-bottom:15px;
+    color:#BEF264;
+}
+
+.footer-box p,
+.footer-box a{
+    color:#E2E8F0;
+    text-decoration:none;
+    margin-bottom:8px;
+    display:block;
+    transition:0.3s;
+}
+
+.footer-box a:hover{
+    color:#BEF264;
+}
+
+.footer-bottom{
+    text-align:center;
+    padding:15px;
+    border-top:
+    1px solid
+    rgba(255,255,255,0.15);
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media screen and (max-width:992px){
+
+    .navbar{
+        padding:15px 25px;
+    }
+
+    .hero-content h1{
+        font-size:2.8rem;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media screen and (max-width:768px){
+
+    .navbar{
+        flex-direction:column;
+        gap:15px;
+        padding:15px;
+    }
+
+    .nav-links{
+        flex-direction:column;
+        width:100%;
+        text-align:center;
+    }
+
+    .nav-links li{
+        width:100%;
+    }
+
+    .nav-links a{
+        display:block;
+        padding:10px;
+    }
+
+    .login-btn{
+        width:90%;
+        margin:auto;
+        text-align:center;
+    }
+
+    .hero{
+        min-height:70vh;
+    }
+
+    .hero-content h1{
+        font-size:2rem;
+        line-height:1.4;
+    }
+
+    .hero-content p{
+        font-size:1rem;
+    }
+
+    .hero-buttons{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .btn{
+        width:100%;
+        max-width:300px;
+        text-align:center;
+    }
+
+    .footer-container{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media screen and (max-width:480px){
+
+    .logo h2{
+        font-size:1.3rem;
+    }
+
+    .hero-content h1{
+        font-size:1.7rem;
+    }
+
+    .hero-content p{
+        font-size:0.95rem;
+    }
+
+    .btn{
+        padding:12px;
+    }
+}

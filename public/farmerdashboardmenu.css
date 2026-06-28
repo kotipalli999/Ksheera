@@ -1,0 +1,562 @@
+/* ==========================================================================
+   AGRICULTURE & DAIRY THEME - FARMER DASHBOARD SYSTEM CONTROL CSS
+   ========================================================================== */
+
+:root {
+    --primary: #15803D;       /* పచ్చటి అడవి/వ్యవసాయ రంగు (Forest Green) */
+    --primary-dark: #14532D;  /* ముదురు ఆకుపచ్చ (Deep Green) */
+    --accent: #84CC16;       /* తాజా నిమ్మపచ్చ రంగు (Fresh Lime) */
+    --accent-hover: #BEF264; /* బ్రైట్ హోవర్ కలర్ */
+    --secondary: #10b981;    /* సక్సెస్ / క్రెడిట్ అమౌంట్ గ్రీన్ */
+    --warning: #f59e0b;      /* పెండింగ్ అమౌంట్ ఆరెంజ్ */
+    --danger: #ef4444;       /* లాగౌట్ రెడ్ */
+    --bg-light: #F8FAFC;     /* కంటికి హాయిగా ఉండే బ్యాక్‌గ్రౌండ్ ఆఫ్‌వైట్ */
+    --text-dark: #1e293b;    /* డార్క్ రీడబుల్ టెక్స్ట్ */
+    --text-muted: #64748b;   /* లైట్ గ్రే టెక్స్ట్ */
+}
+
+/* GLOBAL RESET */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    padding-bottom: 50px;
+    line-height: 1.5;
+}
+
+/* HEADER STYLE */
+header {
+    background-color: var(--primary);
+    color: white;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(21, 128, 61, 0.15);
+}
+
+.brand {
+    font-size: 1.3rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* MAIN CONTAINER */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* PROFILE BLOCK */
+.profile-bar {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    border-left: 5px solid var(--accent);
+}
+
+.user-info h2 {
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.user-info div {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.user-info strong {
+    color: var(--primary);
+}
+
+.logout-btn {
+    background-color: var(--danger);
+    color: white !important;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.logout-btn:hover {
+    background-color: #b91c1c;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* SUMMARY CARDS GRID */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border-top: 4px solid var(--primary);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card.success { border-top-color: var(--secondary); }
+.card.warning { border-top-color: var(--warning); }
+
+.card-title {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.card-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.card.success .card-value { color: var(--secondary); }
+.card.warning .card-value { color: var(--warning); }
+
+/* DASHBOARD LAYOUT MANAGEMENT */
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+}
+
+.section-box {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.section-title {
+    font-size: 1.15rem;
+    color: var(--primary-dark);
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* RESPONSIVE TABLES CONFIGURATION */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+    border: 1px solid #f1f5f9;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+    min-width: 600px; /* చిన్న స్క్రీన్లలో టేబుల్ విరిగిపోకుండా పక్కకు స్క్రోల్ అవ్వడానికి */
+}
+
+th {
+    background-color: #f1f5f9;
+    color: var(--primary-dark);
+    padding: 12px 16px;
+    font-weight: 600;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: var(--text-dark);
+}
+
+tr:hover td {
+    background-color: #f8fafc;
+}
+
+/* ACTIONS GRID SETUP */
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn-action {
+    background: #ffffff;
+    color: var(--primary-dark);
+    text-align: center;
+    padding: 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+    display: block;
+}
+
+.btn-action:hover {
+    background: var(--primary);
+    color: white !important;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(21, 128, 61, 0.15);
+}
+
+/* NOTIFICATIONS ENGINE */
+.notif-item {
+    padding: 15px 0;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.notif-item:last-child {
+    border-bottom: none;
+}
+
+.notif-date {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 5px;
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+@media screen and (max-width: 768px) {
+    header {
+        padding: 15px;
+    }
+
+    .container {
+        padding: 12px;
+    }
+
+    .profile-bar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .logout-btn {
+        width: 100%;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr 1fr; /* మొబైల్‌లో కార్డులు పక్కపక్కన రెండు వచ్చేలా సర్దుబాటు */
+        gap: 10px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .card-value {
+        font-size: 1.3rem;
+    }
+
+    .section-box {
+        padding: 15px;
+    }
+
+    .actions-grid {
+        grid-template-columns: 1fr; /* మొబైల్‌లో బటన్లు ఒకదాని కింద ఒకటి వస్తాయి */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .cards-grid {
+        grid-template-columns: 1fr; /* మరీ చిన్న మొబైల్‌లో సింగిల్ కాలమ్ కార్డులు */
+    }
+
+    .brand {
+        font-size: 1.1rem;
+    }
+} 
+/* =====================================================
+   ADVANCED MOBILE RESPONSIVE PATCH
+   APPEND AT END OF EXISTING CSS
+===================================================== */
+
+/* Tablet */
+@media screen and (max-width: 1024px) {
+
+    .container {
+        padding: 15px;
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .profile-bar {
+        gap: 15px;
+    }
+
+    .card-value {
+        font-size: 1.4rem;
+    }
+
+}
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+
+    body {
+        font-size: 14px;
+        overflow-x: hidden;
+    }
+
+    header {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+        padding: 12px;
+    }
+
+    .brand {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .profile-bar {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: left;
+    }
+
+    .user-info h2 {
+        font-size: 1.2rem;
+    }
+
+    .user-info div {
+        font-size: 0.85rem;
+    }
+
+    .logout-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .card {
+        padding: 12px;
+    }
+
+    .card-title {
+        font-size: 0.75rem;
+    }
+
+    .card-value {
+        font-size: 1.1rem;
+    }
+
+    .section-box {
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .section-title {
+        font-size: 1rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 750px;
+    }
+
+    th,
+    td {
+        white-space: nowrap;
+        font-size: 0.85rem;
+        padding: 10px;
+    }
+
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .btn-action {
+        width: 100%;
+        padding: 14px;
+    }
+
+    .notif-item {
+        font-size: 0.85rem;
+    }
+
+}
+
+/* Small Mobile */
+@media screen and (max-width: 576px) {
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    .card-value {
+        font-size: 1.25rem;
+    }
+
+    .user-info h2 {
+        font-size: 1.1rem;
+    }
+
+    .section-title {
+        font-size: 0.95rem;
+    }
+
+    .btn-action {
+        font-size: 0.85rem;
+    }
+
+}
+
+/* Very Small Mobile */
+@media screen and (max-width: 360px) {
+
+    .container {
+        padding: 8px;
+    }
+
+    .card {
+        padding: 10px;
+    }
+
+    .card-title {
+        font-size: 0.7rem;
+    }
+
+    .card-value {
+        font-size: 1rem;
+    }
+
+    .user-info h2 {
+        font-size: 1rem;
+    }
+
+    th,
+    td {
+        font-size: 0.75rem;
+        padding: 8px;
+    }
+
+}
+
+/* Better Touch Support */
+
+a,
+button,
+.btn-action,
+.logout-btn {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Prevent Overflow */
+
+img,
+iframe,
+video,
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Long Text Protection */
+
+.card-value,
+.card-title,
+.section-title,
+.user-info div,
+td,
+th {
+    word-break: break-word;
+}
+
+/* Smooth Table Scroll */
+
+.table-responsive::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 20px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f8fafc;
+}
+
+/* Better Notification Wrapping */
+
+.notif-item div {
+    word-break: break-word;
+}
+
+/* Better Profile Section */
+
+.profile-bar,
+.section-box {
+    overflow: hidden;
+}

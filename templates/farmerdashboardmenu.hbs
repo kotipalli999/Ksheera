@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ksheera Accounting - Farmer Dashboard</title>
+    <link rel="stylesheet" href="/farmerdashboardmenu.css">
+    
+   </head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="brand">☰ 🥛 Ksheera Accounting</div>
+        <div>ఫార్మర్ పోర్టల్</div>
+    </header>
+
+    <div class="container">
+        
+        <!-- PROFILE & WELCOME BAR -->
+        <div class="profile-bar">
+            <div class="user-info">
+              
+                <h2>
+👋 Welcome,
+{{farmer.name}}
+</h2>
+
+<div>
+<strong>Farmer ID:</strong>
+{{farmer.farmerId}}
+</div>
+
+<div>
+<strong>Village:</strong>
+{{farmer.village}}
+</div>
+    <div><strong>Last Login:</strong> Today 7:15 AM</div>
+                </div>
+            </div>
+          <a href="/logout"
+   class="logout-btn">
+    Logout
+</a>
+        </div>
+
+        <!-- SUMMARY CARDS -->
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-title">🥛 Today's Milk</div>
+                <div class="card-value">{{todayMilk}} Ltrs</div>
+            </div>
+            <div class="card success">
+                <div class="card-title">💰 Today's Amount</div>
+                <div class="card-value">₹ {{todayAmount}}</div>
+            </div>
+            <div class="card">
+                <div class="card-title">📅 Month Milk</div>
+                <div class="card-value">{{monthMilk}} Ltrs</div>
+            </div>
+            <div class="card success">
+                <div class="card-title">💵 Month Earnings</div>
+                <div class="card-value">₹ {{monthEarnings}}</div>
+
+            </div>
+            <div class="card warning">
+                <div class="card-title">⏳ Pending Amount</div>
+                <div class="card-value">₹ {{pendingAmount}}</div>
+            </div>
+            <div class="card success">
+                <div class="card-title">✅ Total Paid</div>
+            <div class="card-value">₹ {{totalPaid}}</div>
+            </div>
+            <div class="card">
+                <div class="card-title">🧪 Avg FAT</div>
+                <div class="card-value">{{avgFat}} %</div>
+            </div>
+            <div class="card">
+                <div class="card-title">🧪 Avg SNF</div>
+                <div class="card-value">{{avgSnf}} %</div>
+            </div>
+        </div>
+
+        <!-- MAIN LAYOUT -->
+        <div class="dashboard-layout">
+            
+            <!-- LEFT COLUMN -->
+            <div class="main-content">
+                
+                <!-- TODAY'S COLLECTION -->
+               <div class="section-box">
+
+    <div class="section-title">
+        TODAY'S COLLECTION
+    </div>
+
+    <div class="table-responsive">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Session</th>
+                    <th>Milk (Ltrs)</th>
+                    <th>FAT (%)</th>
+                    <th>SNF (%)</th>
+                    <th>Rate/Ltr</th>
+                    <th>Total Amount</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {{#if todayCollections.length}}
+
+                    {{#each todayCollections}}
+
+                    <tr>
+
+                        <td>
+                            {{session}}
+                        </td>
+
+                        <td>
+                            {{liters}}
+                        </td>
+
+                        <td>
+                            {{fat}}
+                        </td>
+
+                        <td>
+                            {{snf}}
+                        </td>
+
+                        <td>
+                            ₹ {{rate}}
+                        </td>
+
+                        <td>
+                            <strong>
+                                ₹ {{totalAmount}}
+                            </strong>
+                        </td>
+
+                    </tr>
+
+                    {{/each}}
+
+                {{else}}
+
+                    <tr>
+
+                        <td colspan="6"
+                            style="
+                                text-align:center;
+                                padding:20px;
+                                color:#64748b;
+                            ">
+
+                            No Collection Found For Today
+
+                        </td>
+
+                    </tr>
+
+                {{/if}}
+
+            </tbody>
+
+            <tfoot>
+
+                <tr
+                    style="
+                        background:#f8fafc;
+                        font-weight:bold;
+                    ">
+
+                    <td>
+                        Total
+                    </td>
+
+                    <td>
+                        {{todayMilk}} Ltrs
+                    </td>
+
+                    <td colspan="3">
+                    </td>
+
+                    <td
+                        style="
+                            color:green;
+                        ">
+
+                        ₹ {{todayAmount}}
+
+                    </td>
+
+                </tr>
+
+            </tfoot>
+
+        </table>
+
+    </div>
+
+</div>
+                <!-- LAST 10 COLLECTIONS (ఇక్కడి నుండి మిగిలిన కోడ్) -->
+                <div class="section-box">
+
+    <div class="section-title">
+        LAST 10 COLLECTIONS
+    </div>
+
+    <div class="table-responsive">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Date</th>
+                    <th>Session</th>
+                    <th>Milk (L)</th>
+                    <th>FAT (%)</th>
+                    <th>SNF (%)</th>
+                    <th>Rate/Ltr</th>
+                    <th>Total Amount</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {{#if lastCollections.length}}
+
+                    {{#each lastCollections}}
+
+                    <tr>
+
+                        <td>{{formatDate createdAt}}</td>
+
+                        <td>{{session}}</td>
+
+                        <td>{{liters}}</td>
+
+                        <td>{{fat}}</td>
+
+                        <td>{{snf}}</td>
+
+                        <td>₹ {{rate}}</td>
+
+                        <td>₹ {{totalAmount}}</td>
+
+                    </tr>
+
+                    {{/each}}
+
+                {{else}}
+
+                    <tr>
+                        <td colspan="7"
+                            style="
+                                text-align:center;
+                                padding:20px;
+                                color:#64748b;
+                            ">
+                            No Collection History Found
+                        </td>
+                    </tr>
+
+                {{/if}}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+                <!-- PAYMENT SUMMARY -->
+                        <!-- PAYMENT SUMMARY (ఇక్కడ incomplete గా ఉన్న చోట నుండి కంటిన్యూ చేయండి) -->
+        <div class="section-box">
+            <div class="section-title">PAYMENT SUMMARY</div>
+            
+            {{#if lastPayment}}
+            <div style="font-size:0.95rem; line-height:2;">
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding:5px 0;">
+                    <span>Last Paid Amount:</span>
+                    <strong style="color:var(--secondary);">₹ {{lastPayment.transactionAmount}}</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding:5px 0;">
+                    <span>Last Paid Date:</span>
+                    <strong>{{formatDate lastPayment.paymentDate}}</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid #f1f5f9; padding:5px 0;">
+                    <span>Payment Method:</span>
+                    <strong>{{lastPayment.paymentMethod}}</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:5px 0;">
+                    <span>Status:</span>
+                    <strong style="color:var(--secondary);">{{lastPayment.status}}</strong>
+                </div>
+            </div>
+           {{else}}
+<p style="text-align:center; padding:10px; color:#64748b;">
+    No recent payment found
+</p>
+{{/if}}
+</div>
+
+        <!-- LEDGER -->
+        <div class="section-box">
+            <div class="section-title">LEDGER</div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Particulars / Description</th>
+                            <th>Credit (జమ)</th>
+                            <th>Debit (ఖర్చు)</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#if ledgerEntries.length}}
+                            {{#each ledgerEntries}}
+                            <tr>
+                                <td>{{formatDate date}}</td>
+                                <td>{{description}}</td>
+                                <td style="color: green;">{{#if credit}}₹ {{credit}}{{else}}-{{/if}}</td>
+                                <td style="color: red;">{{#if debit}}₹ {{debit}}{{else}}-{{/if}}</td>
+                                <td><strong>₹ {{balance}}</strong></td>
+                            </tr>
+                            {{/each}}
+                        {{else}}
+                            <tr>
+                                <td colspan="5" style="text-align:center; padding:20px; color:#64748b;">
+                                    No Ledger Entries Found
+                                </td>
+                            </tr>
+                        {{/if}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- MONTHLY SUMMARY -->
+        <div class="section-box">
+            <div class="section-title">MONTHLY SUMMARY</div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Total Milk (Ltrs)</th>
+                            <th>Avg FAT (%)</th>
+                            <th>Avg SNF (%)</th>
+                            <th>Total Earnings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#if monthlySummary.length}}
+                            {{#each monthlySummary}}
+                            <tr>
+                                <td>{{monthName}}</td>
+                                <td>{{totalLiters}} L</td>
+                                <td>{{avgFat}}%</td>
+                                <td>{{avgSnf}}%</td>
+                                <td><strong>₹ {{totalEarnings}}</strong></td>
+                            </tr>
+                            {{/each}}
+                        {{else}}
+                            <tr>
+                                <td colspan="5" style="text-align:center; padding:20px; color:#64748b;">
+                                    No Monthly Data Found
+                                </td>
+                            </tr>
+                        {{/if}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- PROFILE DETAILS -->
+        <div class="section-box">
+            <div class="section-title">PROFILE DETAILS</div>
+            <div style="font-size: 0.95rem; line-height: 1.8;">
+                <p><strong>Full Name:</strong> {{farmer.name}}</p>
+                <p><strong>Registered Mobile:</strong>{{farmer.mobile}} </p>
+                <p><strong>Dairy Center / Route:</strong> {{farmer.route}}</p>
+                <p><strong>Bank A/c No:</strong> {{farmer.bankAccountNo}}</p>
+            </div>
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <div class="section-box">
+            <div class="section-title">NOTIFICATIONS</div>
+            {{#if notifications.length}}
+                {{#each notifications}}
+                <div class="notif-item">
+                    <div style="font-weight: 600;">{{title}}</div>
+                    <div style="color: #64748b; margin-top:2px;">{{message}}</div>
+                    <span class="notif-date">{{formatDate createdAt}}</span>
+                </div>
+                {{/each}}
+            {{else}}
+                <p style="color:#64748b; font-size:0.9rem; padding:10px 0;">No new notifications</p>
+            {{/if}}
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="section-box">
+            <div class="section-title">QUICK ACTIONS</div>
+            <div class="actions-grid">
+                <a href="/download-statement" class="btn-action">📄 DOWNLOAD STATEMENT</a>
+                <a href="/download-receipt" class="btn-action">🧾 DOWNLOAD RECEIPT</a>
+                <a href="/change-password" class="btn-action">🔑 CHANGE PASSWORD</a>
+                <a href="/contact-admin" class="btn-action">📞 CONTACT ADMIN</a>
+            </div>
+        </div>
+
+    </div> <!-- Main Content End -->
+</div> <!-- Dashboard Layout End -->
+</div> <!-- Container End -->
+
+</body>
+</html>

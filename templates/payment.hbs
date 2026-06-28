@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milk Accounting - Dashboard</title>
+    <link rel="stylesheet" href="/payment.css">
+    <!-- ఫాంట్ అవసమ్ ఐకాన్స్ కొరకు పూర్తి CDN లింక్ -->
+    <link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- 1. సైడ్‌బార్ ప్యానెల్ -->
+    <div class="sidebar">
+        <div class="logo">
+            <h2>🥛 Ksheera Accounting</h2>
+            <p>Collection Agent</p>
+        </div>
+        <div class="menu">
+            <a href="/collectionagentdashboardmenu" >📊 Dashboard</a>
+            <a href="/agent/profile">👤 Profile</a>
+            <a href="/agent/farmers">🚜 Farmers</a>
+            <a href="/agent/collections">🥛 Milk Collection</a>
+            <a href="/agent/farmer-ledger">📒 Farmers Ledger</a>
+            <a href="/agent/payments" class="active">💰 Payment Reports</a>
+            <a href="/agent/payment-transactions">📈 Payment Transactions</a>
+            <a href="/agent/device-status">🖥️ Device Status</a>
+            <a href="/agent/settings">⚙️ Settings</a>
+            <a href="/logout" class="logout">🚪 Logout</a>
+        </div>
+    </div>
+
+    <!-- 2. మెయిన్ కంటెంట్ ఏరియా -->
+    <div class="main-content">
+        
+        <!-- సమ్మరీ కార్డ్స్ -->
+        <div class="summary-cards">
+            <div class="card card-paid">
+                <h3>Total Amount Paid</h3>
+                <p id="totalpaid">₹ 0.00</p>
+            </div>
+            <div class="card">
+                <h3>Total Net Payable</h3>
+                <p id="totalNet">₹ 0.00</p>
+            </div>
+            <div class="card card-pending">
+                <h3>Total Balance Due</h3>
+                <p id="totalDue">₹ 0.00</p>
+            </div>
+        </div>
+
+        <!-- సెర్చ్ & ఫిల్టర్ సెక్షన్ -->
+        <div class="filter-container">
+            <input type="text" id="searchFarmer" placeholder="🔍 Search Farmer Name or ID..." onkeyup="filterTable()">
+            <select id="filterStatus" onchange="filterTable()">
+                <option value="all">All Status</option>
+                <option value="paid">Paid</option>
+                <option value="pending">Pending</option>
+                <option value="partial">Partial</option>
+            </select>
+        </div>
+
+        <!-- పేమెంట్ టేబుల్ -->
+         <div class="table-responsive">
+        <table class="payment-table">
+            <thead>
+                <tr>
+                    <th>Farmer ID</th>
+                    <th>Farmer Name</th>
+                    <th>TCD</th>
+                    <th>T.Ltrs</th>
+                    <th>T.Mlk</th>
+                    <th>Advance</th>
+                    <th>Bonus</th>
+                    <th>Deduction</th>
+                    <th>Net Payable</th>
+                    <th>Paid Amt</th>
+                    <th>Bal Due</th>
+                    <th>Status</th>
+                    <th>Pay Date</th>
+                    <th>Method</th>
+                    <th>PDF</th>
+                    <th>WhatsApp</th>
+                    <th>Actions</th> <!-- యాక్షన్స్ హెడర్ -->
+                </tr>
+            </thead>
+            <tbody id="paymentTableBody">
+                {{#each payments}}
+                <tr>
+                    <td>{{this.farmerId.farmerId}}</td>
+                    <td>{{this.farmerId.name}}</td>
+                    <td>{{this.totalCollectionDays}}</td>
+                    <td>{{this.totalLiters}}</td>
+                    <td>₹ {{this.totalMilkAmount}}</td>
+                    <td>₹ {{this.advanceAmount}}</td>
+                    <td>₹ {{this.bonusAmount}}</td>
+                    <td>₹ {{this.deductionAmount}}</td>
+                    <td>₹ {{this.netPayableAmount}}</td>
+                    <td>₹ {{this.paidAmount}}</td>
+                    <td>₹ {{this.balanceDue}}</td>
+                    <td>
+                        <span class="badge badge-{{this.paymentStatus}}">{{this.paymentStatus}}</span>
+                    </td>
+                    <td>
+    {{formatDate this.lastPaymentDate}}
+</td>
+
+<td>
+    {{#if this.lastPaymentMethod}}
+        {{this.lastPaymentMethod}}
+    {{else}}
+         
+    {{/if}}
+</td>
+<td>
+                        {{#if this.pdfGenerated}}
+                            <button class="btn-pdf" title="Download PDF"><i class="fa-solid fa-file-pdf"></i></button>
+                        {{else}}
+                            ❌
+                        {{/if}}
+                    </td>
+                    <td>
+                        {{#if this.whatsappSent}}
+                            <button class="btn-whatsapp" title="Send WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
+                        {{else}}
+                            ❌
+                        {{/if}}
+                    </td>
+                    <td>
+                        <!-- ఇక్కడే యాక్షన్ బటన్లు ఉన్నాయి -->
+                        {{#if (eq this.paymentStatus "Paid")}}
+<button class="btn-pay" disabled>
+    Paid
+</button>
+{{else}}
+<button
+    class="btn-pay"
+    data-paymentid="{{this._id}}"
+    data-farmerid="{{this.farmerId._id}}"
+    data-farmername="{{this.farmerId.name}}"
+    data-totaldays="{{this.totalCollectionDays}}"
+    data-totalliters="{{this.totalLiters}}"
+    data-totalamount="{{this.totalMilkAmount}}"
+    data-advance="{{this.advanceAmount}}"
+    data-bonus="{{this.bonusAmount}}"
+    data-deduction="{{this.deductionAmount}}"
+    data-netpayable="{{this.netPayableAmount}}"
+    data-balance="{{this.balanceDue}}">
+
+    Pay
+
+</button>
+{{/if}}
+                        <button class="btn-view" onclick="window.location.href='/agent/farmer-ledger?farmerId={{this.farmerId._id}}'">View Ledger</button>
+                    </td>
+                </tr>
+                {{/each}}
+
+                {{#unless payments.length}}
+                <tr>
+                    <td colspan="18" style="text-align: center; padding: 20px; font-weight: bold;">
+                        No payment records found.
+                    </td>
+                </tr>
+                {{/unless}}
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+    <!-- 3. పేమెంట్ పాపప్ మోడల్ -->
+    <div id="paymentModal" class="modal" style="display:none;">
+    <div class="modal-content">
+
+        <h3>💳 Process Payment</h3>
+
+        <form id="paymentForm">
+
+            <input
+                type="hidden"
+                id="modalPaymentId">
+                <input
+    type="hidden"
+    id="modalFarmerId">
+
+<input
+    type="hidden"
+    id="modalTotalDays">
+
+<input
+    type="hidden"
+    id="modalTotalLiters">
+
+<input
+    type="hidden"
+    id="modalTotalMilkAmount">
+
+<input
+    type="hidden"
+    id="modalAdvanceAmount">
+
+<input
+    type="hidden"
+    id="modalBonusAmount">
+
+<input
+    type="hidden"
+    id="modalDeductionAmount">
+
+<input
+    type="hidden"
+    id="modalNetPayable">
+
+            <!-- Farmer Information -->
+
+            <div class="payment-info">
+
+                <p>
+                    <strong>Farmer:</strong>
+                    <span id="modalFarmerName"></span>
+                </p>
+
+                <p>
+                    <strong>Balance Due:</strong>
+                    ₹ <span id="modalBalanceDue">0</span>
+                </p>
+
+            </div>
+
+            <!-- Payment Amount -->
+
+            <div class="form-group">
+
+                <label>Amount to Pay (₹):</label>
+
+                <input
+                    type="number"
+                    id="modalAmount"
+                    min="1"
+                    step="0.01"
+                    required>
+
+            </div>
+
+            <!-- Payment Method -->
+
+            <div class="form-group">
+
+                <label>Payment Method:</label>
+
+                <select id="modalMethod">
+
+                    <option value="Cash">
+                        Cash
+                    </option>
+
+                    <option value="UPI">
+                        UPI
+                    </option>
+
+                    <option value="Bank Transfer">
+                        Bank Transfer
+                    </option>
+
+                    <option value="Cheque">
+                        Cheque
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- Optional Remarks -->
+
+            <div class="form-group">
+
+                <label>Remarks</label>
+
+                <input
+                    type="text"
+                    id="modalRemarks"
+                    placeholder="Optional remarks">
+
+            </div>
+
+            <!-- Actions -->
+
+            <div class="modal-actions">
+
+                <button
+                    type="submit"
+                    class="btn-confirm">
+
+                    Confirm Payment
+
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-cancel"
+                    onclick="closeModal()">
+
+                    Cancel
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+    <!-- ఇక్కడ మీ జావాస్క్రిప్ట్ (JS) ఫైల్ లేదా స్క్రిప్ట్ ట్యాగ్‌ను లింక్ చేయండి -->
+   <script>
+/**
+ * Milk Accounting - Dashboard JS Logic
+ * అన్ని అడ్వాన్స్‌డ్ ఫీచర్లు (Search, Filter, KPI Calculator, Modal Handlers, Fetch API) ఇక్కడ ఉన్నాయి.
+ */
+
+document.addEventListener("DOMContentLoaded", () => {
+    calculateSummaryTotals();
+    setupPaymentActions();
+    setupPaymentForm();
+    setupReportActions();
+});
+
+/**
+ * 1. లైవ్ సెర్చ్ మరియు స్టేటస్ ఫిల్టర్ ఫంక్షన్
+ */
+function filterTable() {
+    const searchElement = document.getElementById("searchFarmer");
+    const statusElement = document.getElementById("filterStatus");
+    const tableBody = document.getElementById("paymentTableBody");
+
+    if (!searchElement || !statusElement || !tableBody) return;
+
+    const searchInput = searchElement.value.toUpperCase();
+    const statusFilter = statusElement.value.toUpperCase();
+    const rows = tableBody.getElementsByTagName("tr");
+
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i].cells.length <= 1) continue;
+
+        const idCell = rows[i].cells[0];
+        const nameCell = rows[i].cells[1];
+        const statusCell = rows[i].cells[11];
+
+        if (idCell && nameCell && statusCell) {
+            const idText = idCell.textContent || idCell.innerText;
+            const nameText = nameCell.textContent || nameCell.innerText;
+            const statusText = statusCell.textContent || statusCell.innerText;
+
+            const matchesSearch =
+                idText.toUpperCase().includes(searchInput) ||
+                nameText.toUpperCase().includes(searchInput);
+
+            const matchesStatus =
+                statusFilter === "ALL" ||
+                statusText.toUpperCase().trim() === statusFilter;
+
+            rows[i].style.display = matchesSearch && matchesStatus ? "" : "none";
+        }
+    }
+}
+
+/**
+ * 2. సమ్మరీ కార్డ్స్ టోటల్స్
+ */
+function calculateSummaryTotals() {
+    const tableBody = document.getElementById("paymentTableBody");
+    if (!tableBody) return;
+
+    const rows = tableBody.getElementsByTagName("tr");
+    let totalNet = 0;
+    let totalPaid = 0;
+    let totalDue = 0;
+
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i].cells.length <= 1) continue;
+
+        const netText =
+    rows[i].cells[8].textContent ||
+    rows[i].cells[8].innerText;
+
+const paidText =
+    rows[i].cells[9].textContent ||
+    rows[i].cells[9].innerText;
+
+const dueText =
+    rows[i].cells[10].textContent ||
+    rows[i].cells[10].innerText;
+
+        totalNet += parseFloat(netText.replace(/[^0-9.]/g, "")) || 0;
+        totalPaid += parseFloat(paidText.replace(/[^0-9.]/g, "")) || 0;
+        totalDue += parseFloat(dueText.replace(/[^0-9.]/g, "")) || 0;
+    }
+
+    const totalNetEl = document.getElementById("totalNet");
+    const totalPaidEl = document.getElementById("totalpaid");
+    const totalDueEl = document.getElementById("totalDue");
+
+    if (totalNetEl) {
+        totalNetEl.innerText = `₹ ${totalNet.toLocaleString("en-IN", { minimumFractionDigits: 2 })}`;
+    }
+    if (totalPaidEl) {
+        totalPaidEl.innerText = `₹ ${totalPaid.toLocaleString("en-IN", { minimumFractionDigits: 2 })}`;
+    }
+    if (totalDueEl) {
+        totalDueEl.innerText = `₹ ${totalDue.toLocaleString("en-IN", { minimumFractionDigits: 2 })}`;
+    }
+}
+
+/*3. పేమెంట్ మోడల్ పాపప్ మేనేజ్‌మెంట్*/
+function setupPaymentActions() {
+    const tableBody = document.getElementById("paymentTableBody");
+    const modal = document.getElementById("paymentModal");
+
+    if (!tableBody || !modal) return;
+
+    tableBody.addEventListener("click", function (e) {
+         console.log("Pay button clicked");
+        const payButton = e.target.closest(".btn-pay");
+        if (!payButton) return;
+
+        if (payButton.disabled) return;
+
+        const paymentId =
+    payButton.dataset.paymentid || "";
+
+const farmerId =
+    payButton.dataset.farmerid;
+
+const totalDays =
+    payButton.dataset.totaldays;
+
+const totalLiters =
+    payButton.dataset.totalliters;
+
+const totalMilkAmount =
+    payButton.dataset.totalamount;
+
+const advanceAmount =
+    payButton.dataset.advance;
+
+const bonusAmount =
+    payButton.dataset.bonus;
+
+const deductionAmount =
+    payButton.dataset.deduction;
+
+const netPayableAmount =
+    payButton.dataset.netpayable;
+        const row = payButton.closest("tr");
+        if (!row) return;
+
+        const farmerName = (row.cells[1]?.textContent || row.cells[1]?.innerText || "").trim();
+        const netAmountText =
+    row.cells[8]?.textContent ||
+    row.cells[8]?.innerText ||
+    "0";
+
+const paidAmountText =
+    row.cells[9]?.textContent ||
+    row.cells[9]?.innerText ||
+    "0";
+
+const balanceDueText =
+    row.cells[10]?.textContent ||
+    row.cells[10]?.innerText ||
+    "0";
+
+        const netAmount = parseFloat(netAmountText.replace(/[^0-9.]/g, "")) || 0;
+        const paidAmount = parseFloat(paidAmountText.replace(/[^0-9.]/g, "")) || 0;
+        const balanceDue = parseFloat(balanceDueText.replace(/[^0-9.]/g, "")) || 0;
+
+        if (balanceDue <= 0) {
+            alert("This payment is already fully paid!");
+            return;
+        }
+
+        const modalPaymentId = document.getElementById("modalPaymentId");
+        const modalFarmerName = document.getElementById("modalFarmerName");
+        const modalBalanceDue = document.getElementById("modalBalanceDue");
+        const modalAmount = document.getElementById("modalAmount");
+        const modalMethod = document.getElementById("modalMethod");
+        const modalRemarks = document.getElementById("modalRemarks");
+
+        if (modalPaymentId) modalPaymentId.value = paymentId || "";
+        const modalFarmerId = document.getElementById("modalFarmerId");
+if (modalFarmerId) modalFarmerId.value = farmerId;
+
+const modalTotalDays = document.getElementById("modalTotalDays");
+if (modalTotalDays) modalTotalDays.value = totalDays;
+
+const modalTotalLiters = document.getElementById("modalTotalLiters");
+if (modalTotalLiters) modalTotalLiters.value = totalLiters;
+
+const modalTotalMilkAmount = document.getElementById("modalTotalMilkAmount");
+if (modalTotalMilkAmount) modalTotalMilkAmount.value = totalMilkAmount;
+
+const modalAdvanceAmount = document.getElementById("modalAdvanceAmount");
+if (modalAdvanceAmount) modalAdvanceAmount.value = advanceAmount;
+
+const modalBonusAmount = document.getElementById("modalBonusAmount");
+if (modalBonusAmount) modalBonusAmount.value = bonusAmount;
+
+const modalDeductionAmount = document.getElementById("modalDeductionAmount");
+if (modalDeductionAmount) modalDeductionAmount.value = deductionAmount;
+
+const modalNetPayable = document.getElementById("modalNetPayable");
+if (modalNetPayable) modalNetPayable.value = netPayableAmount;
+if (modalFarmerName) modalFarmerName.innerText = farmerName;
+        if (modalBalanceDue) modalBalanceDue.innerText = balanceDue.toFixed(2);
+
+        if (modalAmount) {
+            modalAmount.value = balanceDue.toFixed(2);
+            modalAmount.max = balanceDue.toFixed(2);
+            modalAmount.min = "0.01";
+        }
+
+        if (modalMethod) modalMethod.value = "Cash";
+        if (modalRemarks) modalRemarks.value = "";
+
+        modal.style.display = "flex";
+    });
+}
+
+function closeModal() {
+    const modal = document.getElementById("paymentModal");
+    const paymentForm = document.getElementById("paymentForm");
+
+    if (modal) {
+        modal.style.display = "none";
+    }
+
+    if (paymentForm) {
+        paymentForm.reset();
+    }
+
+    const modalPaymentId = document.getElementById("modalPaymentId");
+    const modalFarmerName = document.getElementById("modalFarmerName");
+    const modalBalanceDue = document.getElementById("modalBalanceDue");
+    const modalAmount = document.getElementById("modalAmount");
+
+    if (modalPaymentId) modalPaymentId.value = "";
+    if (modalFarmerName) modalFarmerName.innerText = "";
+    if (modalBalanceDue) modalBalanceDue.innerText = "0.00";
+    if (modalAmount) modalAmount.value = "";
+}
+
+window.onclick = function (event) {
+    const modal = document.getElementById("paymentModal");
+    if (event.target === modal) {
+        closeModal();
+    }
+};
+
+/**
+ * 4. బ్యాకెండ్ సర్వర్‌కు Fetch API ద్వారా పేమెంట్ అప్‌డేట్ పంపడం
+ */
+function setupPaymentForm() {
+    const paymentForm = document.getElementById("paymentForm");
+    if (!paymentForm) return;
+
+    paymentForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const paymentId = document.getElementById("modalPaymentId")?.value || "";
+        const amountInput = document.getElementById("modalAmount");
+        const methodInput = document.getElementById("modalMethod");
+        const remarksInput = document.getElementById("modalRemarks");
+        const balanceDueText = document.getElementById("modalBalanceDue")?.innerText || "0";
+
+        const amount = parseFloat(amountInput?.value);
+        const method = methodInput?.value || "Cash";
+        const remarks = remarksInput?.value || "";
+        const balanceDue = parseFloat(balanceDueText) || 0;
+
+        if (isNaN(amount) || amount <= 0) {
+
+    alert("Please enter a valid payment amount.");
+
+    amountInput.focus();
+
+    return;
+
+}
+        if (amount > balanceDue) {
+            alert("Payment cannot exceed Balance Due.");
+            if (amountInput) amountInput.focus();
+            return;
+        }
+
+        try {
+
+    const url = paymentId
+        ? `/agent/api/pay/${paymentId}`
+        : `/agent/api/pay/new`;
+
+    const response = await fetch(url, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            farmerId:
+                document.getElementById("modalFarmerId").value,
+
+            totalCollectionDays:
+                document.getElementById("modalTotalDays").value,
+
+            totalLiters:
+                document.getElementById("modalTotalLiters").value,
+
+            totalMilkAmount:
+                document.getElementById("modalTotalMilkAmount").value,
+
+            advanceAmount:
+                document.getElementById("modalAdvanceAmount").value,
+
+            bonusAmount:
+                document.getElementById("modalBonusAmount").value,
+
+            deductionAmount:
+                document.getElementById("modalDeductionAmount").value,
+
+            netPayableAmount:
+                document.getElementById("modalNetPayable").value,
+
+            paidAmount: amount,
+
+            paymentMethod: method,
+
+            remarks: remarks
+
+        })
+
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result.success) {
+
+        alert("🎉 Payment processed successfully!");
+
+        closeModal();
+
+        window.location.reload();
+
+    }
+
+    else {
+
+        alert("❌ Payment failed: " + (result.message || "Unknown error"));
+
+    }
+
+}
+
+catch (error) {
+
+    console.error("Error updating payment:", error);
+
+    alert("Server Connection Error. Please try again later.");
+
+}
+ });
+
+}
+/**
+ * 5. PDF బిల్లు డౌన్‌లోడ్ యాక్షన్
+ */
+function setupReportActions() {
+    const tableBody = document.getElementById("paymentTableBody");
+    if (!tableBody) return;
+
+    tableBody.addEventListener("click", async function (e) {
+        const pdfBtn = e.target.closest(".btn-pdf");
+        if (pdfBtn) {
+            const row = pdfBtn.closest("tr");
+            if (!row) return;
+
+            const farmerId = row.cells[0]?.innerText || "";
+            const farmerName = row.cells[1]?.innerText || "";
+            pdfBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+            try {
+                window.location.href =
+`/agent/api/payments/download-pdf/${farmerId}`;
+
+                setTimeout(() => {
+                    pdfBtn.innerHTML = '<i class="fa-solid fa-file-pdf"></i>';
+                }, 2000);
+            } catch (err) {
+                alert("Error downloading PDF");
+                pdfBtn.innerHTML = '<i class="fa-solid fa-file-pdf"></i>';
+            }
+        }
+
+        const waBtn = e.target.closest(".btn-whatsapp");
+        if (waBtn) {
+            const row = waBtn.closest("tr");
+            if (!row) return;
+
+            const farmerName = row.cells[1]?.innerText || "";
+            const totalLiters =
+row.cells[3].innerText;
+
+const netPayable =
+row.cells[8].innerText;
+
+const balanceDue =
+row.cells[10].innerText;
+
+const status =
+row.cells[11].innerText;
+            const message =
+                `*🥛 Milk Accounting Receipt *%0A` +
+                `------------------------------%0A` +
+                `*Farmer Name:* ${farmerName}%0A` +
+                `*Total Liters:* ${totalLiters}%0A` +
+                `*Net Payable:* ${netPayable}%0A` +
+                `*Balance Due:* ${balanceDue}%0A` +
+                `*Payment Status:* ${status}%0A` +
+                `------------------------------%0A` +
+                `Thank you for business with us! 🥛`;
+
+            const whatsappUrl =
+`https://wa.me/?text=${message}`;
+            window.open(whatsappUrl, "_blank");
+        }
+    });
+}
+</script>
+</body>
+</html>

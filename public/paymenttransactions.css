@@ -1,0 +1,299 @@
+/* Base Resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+/* Top Navigation Bar */
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-logo h2 {
+    font-size: 1.3rem;
+    color: #1e3a8a;
+}
+
+.agent-badge {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #64748b;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.nav-menu a:hover, .nav-menu a.active {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+
+.nav-menu .logout {
+    color: #ef4444;
+}
+
+.nav-menu .logout:hover {
+    background-color: #fef2f2;
+}
+
+/* Container Framework */
+.main-content {
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.page-header h2 {
+    margin-bottom: 25px;
+    font-size: 1.6rem;
+    color: #111827;
+}
+
+/* Summary Dashboard Cards */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+
+.card h3 {
+    font-size: 0.85rem;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.card p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.card-paid {
+    border-left-color: #10b981;
+}
+.card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    border-left: 4px solid #cbd5e1;
+    transition: all 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Filters Grid Arrangement */
+.filter-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.filter-container input, .filter-container select {
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    outline: none;
+    font-size: 0.9rem;
+    min-width: 160px;
+    flex: 1;
+}
+
+/* HTML బటన్ల స్టైల్స్ */
+.btn-search, .btn-reset, .btn-export, .btn-print {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: white;
+    transition: opacity 0.2s;
+}
+
+.btn-search { background-color: #2563eb; }
+.btn-reset { background-color: #64748b; }
+.btn-export { background-color: #16a34a; }
+.btn-print { background-color: #475569; }
+.btn-search:hover, .btn-reset:hover, .btn-export:hover, .btn-print:hover { opacity: 0.9; }
+
+/* Table Elements */
+.table-responsive {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    overflow-x: auto;
+}
+
+.payment-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.payment-table th {
+    background-color: #f8fafc;
+    color: #475569;
+    padding: 14px 16px;
+    font-weight: 600;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.payment-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #edf2f7;
+    color: #334155;
+    vertical-align: middle;
+}
+
+.payment-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Status Badges (Capital/Small Letters రెండిటికీ పని చేస్తుంది) */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+/* Table Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-view,
+.btn-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.1s;
+}
+
+.btn-view {
+    color: #2563eb;
+}
+
+.btn-delete {
+    color: #ef4444;
+}
+
+.btn-view:hover,
+.btn-delete:hover {
+    transform: scale(1.1);
+}
+
+.status-badge.Partial {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.status-badge.Paid {
+    background: #DCFCE7;
+    color: #166534;
+}
+.payment-table td:nth-child(2) {
+    font-weight: 600;
+    color: #1d4ed8;
+}
+.top-navbar {
+    overflow-x: auto;
+}
+
+.nav-menu {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+.payment-table td:nth-child(10) {
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.payment-table td:nth-child(7) {
+    text-align: right;
+    font-weight: 600;
+}
+@media (max-width: 768px) {
+
+    .summary-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-container input,
+    .filter-container select,
+    .filter-container button {
+        width: 100%;
+    }
+
+    .page-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .card p {
+        font-size: 1.2rem;
+    }
+}

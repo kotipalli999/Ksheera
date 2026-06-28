@@ -1,0 +1,195 @@
+
+        /* లెడ్జర్ ప్రత్యేక స్టైల్స్ */
+        .ledger-container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+        .search-filter-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+        }
+        .form-group input, .form-group select {
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .btn-actions {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+        .action-btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .btn-search { background: #2563eb; color: white; }
+        .btn-print { background: #059669; color: white; }
+        .btn-pdf { background: #dc2626; color: white; }
+        
+        /* రైతు వివరాల కార్డ్ */
+        .farmer-profile-card {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .profile-item span {
+            display: block;
+            font-size: 12px;
+            color: #64748b;
+        }
+        .profile-item strong {
+            font-size: 16px;
+            color: #1e293b;
+        }
+
+        /* సమ్మరీ కార్డ్స్ గ్రిడ్ */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .summary-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #cbd5e1;
+        }
+        .summary-card.milk { border-left-color: #3b82f6; }
+        .summary-card.amount { border-left-color: #10b981; }
+        .summary-card.advance { border-left-color: #f59e0b; }
+        .summary-card.balance { border-left-color: #ef4444; }
+        
+        .summary-card h4 { font-size: 12px; color: #64748b; margin: 0 0 5px 0; text-transform: uppercase; }
+        .summary-card p { font-size: 18px; font-weight: 700; margin: 0; color: #1e293b; }
+
+        /* టేబుల్ స్టైల్స్ */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        .ledger-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+        .ledger-table th {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 12px;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .ledger-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+        }
+        .ledger-table tr:hover { background: #f8fafc; }
+        
+        /* సెషన్ బ్యాడ్జ్‌లు */
+        .badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-morning { background: #fef3c7; color: #d97706; }
+        .badge-evening { background: #e0f2fe; color: #0369a1; }
+        .badge-cow { background: #f3e8ff; color: #6b21a8; }
+        .badge-buff { background: #ffedd5; color: #c2410c; }
+
+        /* ప్రింట్ సెట్టింగ్స్ */
+        @media print {
+            body * { visibility: hidden; }
+            .ledger-container, .ledger-container * { visibility: visible; }
+            .ledger-container { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; padding: 0; }
+            .search-filter-section, .sidebar { display: none !important; }
+        }
+    /*grid for dashboard */
+    /* మెనూ కంటైనర్ స్టైలింగ్ */
+.menu {
+    display: flex;
+    flex-wrap: wrap; /* స్క్రీన్ చిన్నదైనప్పుడు కిందకు సర్దుకోవడానికి */
+    gap: 12px;
+    background: #ffffff;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* లైట్ షాడో */
+    border: 1px solid #eef2f5;
+    margin-bottom: 25px;
+}
+
+/* అన్ని మెనూ లింక్‌ల కామన్ స్టైలింగ్ */
+.menu a {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* ఐకాన్, టెక్స్ట్ మధ్య దూరం */
+    color: #495057; /* సాఫ్ట్ బ్లాక్/గ్రే కలర్ */
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease; /* స్మూత్ యానిమేషన్ కోసం */
+}
+
+/* హోవర్ ఎఫెక్ట్ (మౌస్ పెట్టినప్పుడు మారే రంగు) */
+.menu a:hover:not([style*="pointer-events: none"]) {
+    background-color: #f1f3f5;
+    color: #0d6efd; /* విశాఖ డైరీ బ్లూ కలర్ */
+    transform: translateY(-1px); /* చిన్న లిఫ్ట్ ఎఫెక్ట్ */
+}
+
+/* యాక్టివ్ పేజీ (Farmers Ledger) స్టైలింగ్ */
+.menu a.active {
+    background-color: #e7f1ff; /* లైట్ బ్లూ బ్యాక్‌గ్రౌండ్ */
+    color: #0d6efd; /* డార్క్ బ్లూ టెక్స్ట్ */
+    font-weight: 600;
+    border: 1px solid #b6d4fe;
+}
+
+/* లాగౌట్ బటన్ ప్రత్యేక స్టైలింగ్ */
+.menu a.logout {
+    margin-left: auto; /* లాగౌట్ బటన్‌ను కుడి వైపు చివరికి జరపడానికి */
+    color: #dc3545; /* రెడ్ కలర్ */
+}
+
+.menu a.logout:hover {
+    background-color: #fff5f5;
+    color: #bd2130;
+}

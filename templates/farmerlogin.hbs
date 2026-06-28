@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gradient Login</title>
+<link rel="stylesheet" href="/farmerlogin.css">
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="login-container">
+
+        <h2>Login</h2>
+
+        <form action="/farmerlogin" method="post">
+
+            <label>Username</label>
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter Username"
+                required
+            >
+
+            <label>Password</label>
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter Password"
+                required
+            >
+
+            <label>
+                <input type="checkbox">
+                Remember Me
+            </label>
+
+            <br><br>
+
+            <label>
+                <input type="checkbox" required>
+                I agree to the
+                <a href="#">
+                    Terms and Conditions
+                </a>
+            </label>
+
+            <marquee>
+                Welcome to KONC...!
+            </marquee>
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <div class="forgot">
+            <a href="#">
+                Forgot Password?
+            </a>
+        </div>
+
+        <div class="signup">
+            Don't have an account?
+            <a href="/farmersignup">
+                Sign Up
+            </a>
+        </div>
+
+    </div>
+
+</div>
+<footer class="footer">
+<div class="footer-container">
+
+    <div class="footer-box">
+
+        <h3>Milk Accounting System</h3>
+
+        <p>
+            Complete dairy collection and
+            accounting solution with
+            Milk Analyzer and Weighing
+            Machine integration.
+        </p>
+
+    </div>
+
+    <div class="footer-box">
+
+        <h3>Quick Links</h3>
+
+        <a href="/">Home</a>
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact Us</a>
+
+    </div>
+
+    <div class="footer-box">
+
+        <h3>Portals</h3>
+
+        <a href="/collectionagentlogin">
+            Collection Agent Login
+        </a>
+
+        <a href="/farmerlogin">
+            Farmer Login
+        </a>
+
+    </div>
+
+    <div class="footer-box">
+
+        <h3>Features</h3>
+
+        <p>Milk Analyzer Integration</p>
+        <p>Weighing Machine Integration</p>
+        <p>Farmer Management</p>
+        <p>Collection Reports</p>
+        <p>Payment Tracking</p>
+
+    </div>
+
+</div>
+
+<div class="footer-bottom">
+    <p>
+        © 2026 Milk Accounting System.
+        All Rights Reserved.
+    </p>
+
+</div>
+</footer>
+
+</body>
+</html>

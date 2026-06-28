@@ -1,0 +1,22 @@
+<h2>Live Milk Reading</h2>
+
+<h3>Weight: <span id="weight">0</span> Kg</h3>
+<h3>FAT: <span id="fat">0</span></h3>
+<h3>SNF: <span id="snf">0</span></h3>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+const socket = io();
+
+socket.on("milk-reading", (data) => {
+    document.getElementById("weight").innerText =
+        data.weightKg;
+
+    document.getElementById("fat").innerText =
+        data.fat;
+
+    document.getElementById("snf").innerText =
+        data.snf;
+});
+</script>

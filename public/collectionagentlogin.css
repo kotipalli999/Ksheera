@@ -1,0 +1,221 @@
+body{
+    font-family:Arial,sans-serif;
+    background:#F8FAFC;
+    margin:0;
+}
+
+/* Center Login Page */
+.login-page{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+
+    background:
+    linear-gradient(
+        rgba(21,128,61,0.35),
+        rgba(132,204,22,0.35)
+    ),
+    url('/images/milk.jpg');
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+/* Login Card */
+.login-container{
+    background:#FFFFFF;
+    width:100%;
+    max-width:400px;
+    padding:25px;
+    border-radius:18px;
+    border:1px solid #E5E7EB;
+    box-shadow:
+    0 15px 35px rgba(21,128,61,0.15);
+}
+
+/* Title */
+.login-container h2{
+    text-align:center;
+    margin:0 0 10px 0;
+    color:#15803D;
+    font-size:28px;
+    font-weight:700;
+}
+
+/* Labels */
+.login-container label{
+    display:block;
+    margin-top:6px;
+    margin-bottom:5px;
+    font-weight:600;
+    color:#334155;
+}
+
+/* Inputs */
+.login-container input[type="text"],
+.login-container input[type="password"]{
+    width:100%;
+    padding:12px;
+    border:1px solid #D1D5DB;
+    border-radius:10px;
+    margin:0 0 8px 0;
+    box-sizing:border-box;
+    background:#FEFCE8;
+    transition:0.3s;
+}
+
+.login-container input[type="text"]:focus,
+.login-container input[type="password"]:focus{
+    outline:none;
+    border-color:#84CC16;
+    box-shadow:
+    0 0 0 4px rgba(132,204,22,0.18);
+}
+
+/* Checkbox Alignment */
+.login-container label:has(input[type="checkbox"]){
+    display:flex;
+    align-items:center;
+    gap:5px;
+    margin:6px 0;
+    flex-wrap:wrap;
+}
+
+.login-container label input[type="checkbox"]{
+    width:auto;
+    height:auto;
+    margin:0;
+    vertical-align:middle;
+}
+
+.login-container label a{
+    color:#15803D;
+    text-decoration:none;
+    margin-left:2px;
+}
+
+.login-container label a:hover{
+    text-decoration:underline;
+}
+
+/* Marquee */
+marquee{
+    background:#FEFCE8;
+    color:#B91C1C;
+    padding:10px;
+    margin:10px 0;
+    border-radius:10px;
+    border-left:5px solid #84CC16;
+}
+
+/* Button */
+.login-container button{
+    width:100%;
+    padding:13px;
+    margin-top:5px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #15803D,
+        #84CC16
+    );
+
+    border:none;
+    color:white;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.login-container button:hover{
+    transform:translateY(-2px);
+    box-shadow:
+    0 8px 20px rgba(21,128,61,0.30);
+}
+
+/* Links */
+.forgot,
+.signup{
+    text-align:center;
+    margin-top:15px;
+}
+
+.forgot a,
+.signup a{
+    color:#15803D;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.forgot a:hover,
+.signup a:hover{
+    color:#84CC16;
+    text-decoration:underline;
+}
+
+/* Footer */
+.footer{
+    background:#14532D;
+    color:#fff;
+    padding-top:50px;
+}
+
+.footer-container{
+    max-width:1200px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+    padding:0 20px 40px;
+}
+
+.footer-box h3{
+    margin:0 0 10px 0;
+    color:#BEF264;
+}
+
+.footer-box p,
+.footer-box a{
+    color:#E5E7EB;
+    text-decoration:none;
+    margin-bottom:5px;
+    display:block;
+}
+
+.footer-box a:hover{
+    color:#BEF264;
+}
+
+.footer-bottom{
+    text-align:center;
+    padding:15px;
+    border-top:1px solid rgba(255,255,255,0.15);
+}
+
+/* Mobile */
+@media screen and (max-width:768px){
+
+    .footer-container{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+}
+
+@media screen and (max-width:480px){
+
+    .login-container{
+        padding:20px;
+        border-radius:15px;
+    }
+
+    .login-container h2{
+        font-size:24px;
+    }
+}
