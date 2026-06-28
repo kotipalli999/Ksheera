@@ -261,6 +261,7 @@ app.get(
             let stats = {
                 totalMilk: 0,
                 totalAmount: 0,
+                totalFarmers: 0,
                 morningMilk: 0,
                 morningAmount: 0,
                 morningFarmers: 0,
@@ -269,10 +270,15 @@ app.get(
                 eveningFarmers: 0
             };
 
+            const totalFarmerSet = new Set();
             const morningSet = new Set();
             const eveningSet = new Set();
+            
 
             collections.forEach(item => {
+                totalFarmerSet.add(
+    item.farmerId.toString()
+);
                 stats.totalMilk +=
                     item.liters || 0;
 
@@ -304,6 +310,8 @@ app.get(
                 }
             });
 
+            stats.totalFarmers =
+           totalFarmerSet.size;
             stats.morningFarmers =
                 morningSet.size;
 

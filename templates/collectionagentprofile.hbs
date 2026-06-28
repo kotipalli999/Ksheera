@@ -37,7 +37,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <!-- 🌟 హెడర్ భాగం -->
         <header class="dashboard-header">
             <div class="header-title">
-                <h1>📊 Dashboard Overview</h1>
+                <h1>📊 Today Milk Overview</h1>
                 <p class="welcome-text">Welcome back, {{agent.name}}</p>
             </div>
             
@@ -64,21 +64,21 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <div class="stats-grid">
             <div class="stat-card total-milk">
                 <div class="stat-info">
-                    <h3>మొత్తం పాలు (Total Milk)</h3>
+                    <h3>మొత్తం పాలు (Today Total Milk)</h3>
                     <p id="txtTotalMilk">{{totalMilk}} L</p>
                 </div>
                 <div class="stat-icon"><i class="fa-solid fa-tint"></i></div>
             </div>
             <div class="stat-card farmers">
                 <div class="stat-info">
-                    <h3>మొత్తం రైతులు (Total Farmers)</h3>
+                    <h3>మొత్తం రైతులు (Today Total Farmers)</h3>
                     <p id="txtTotalFarmers">{{totalFarmers}}</p>
                 </div>
                 <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
             </div>
             <div class="stat-card amount">
                 <div class="stat-info">
-                    <h3>మొత్తం విలువ (Total Amount)</h3>
+                    <h3>మొత్తం విలువ (Today Total Amount)</h3>
                     <p id="txtTotalAmount">₹ {{totalAmount}}</p>
                 </div>
                 <div class="stat-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
@@ -147,10 +147,7 @@ async function loadTodayStats() {
         const stats = data.stats;
         document.getElementById("txtTotalFarmers")
     .textContent =
-    Math.max(
-        stats.morningFarmers || 0,
-        stats.eveningFarmers || 0
-    );
+    stats.totalFarmers || 0;
 
 
         document.getElementById("txtTotalMilk")

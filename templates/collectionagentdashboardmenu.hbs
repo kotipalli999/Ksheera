@@ -200,6 +200,10 @@ async function filterDashboardData() {
         }
 
         const s = data.stats;
+        document.getElementById(
+    "txtTotalFarmers"
+).innerText =
+    s.totalFarmers;
 
         document.getElementById(
             "txtTotalMilk"
