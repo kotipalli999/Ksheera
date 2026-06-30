@@ -565,3 +565,31 @@ form button[type="submit"] {
         flex: 1 1 100%;
     }
 }
+/*toggle option in mobile*/
+.mobile-menu-btn{
+    display:none;
+    background:#14532d;
+    color:#fff;
+    padding:12px 15px;
+    text-align:center;
+    cursor:pointer;
+    font-size:18px;
+    font-weight:600;
+}
+
+@media (max-width:900px){
+
+    .mobile-menu-btn{
+        display:block;
+    }
+
+    .menu{
+        display:none;
+        flex-direction:column;
+        width:100%;
+    }
+
+    .menu.show{
+        display:flex;
+    }
+}

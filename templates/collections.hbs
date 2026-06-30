@@ -15,8 +15,11 @@
             <h2>🥛 Ksheera Accounting</h2>
             <p>Collection Agent</p>
         </div>
+<div class="mobile-menu-btn" onclick="toggleMenu()">
+    ☰ Menu
+</div>
 
-        <div class="menu">
+        <div class="menu" id="sidebarMenu">
             <a href="/collectionagentdashboardmenu">📊 Dashboard</a>
             <a href="/agent/profile">👤 Profile</a>
             <a href="/agent/farmers">🚜 Farmers</a>
@@ -980,6 +983,13 @@
 
     initialize();
 })();
+//togole option//
+function toggleMenu() {
+    document
+        .getElementById("sidebarMenu")
+        .classList.toggle("show");
+}
+
 </script>
 </body>
 </html>

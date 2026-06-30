@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,137 +10,347 @@
 
 <header>
     <nav class="navbar">
-    <div class="logo">
-        <h2>K O N C - Ksheera Accounting System</h2>
-    </div>
+        <div class="logo">
+            <h2>K O N C - Ksheera Accounting System</h2>
+        </div>
+        
+        <!-- మొబైల్ టాగుల్ బటన్ (సరిచేయబడింది) -->
+        <button id="menuToggle" class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
 
-    <ul class="nav-links">
-
-        <li>
-            <a href="/home">Home</a>
-        </li>
-
-        <li>
-            <a href="/about">About Us</a>
-        </li>
-
-        <li>
-            <a href="/contact">Contact Us</a>
-        </li>
-
-        <li>
-            <a href="/collectionagentlogin" class="login-btn">
-                Collection Agent Login
-            </a>
-        </li>
-
-        <li>
-            <a href="/farmerlogin" class="login-btn">
-                Farmer Login
-            </a>
-        </li>
-
-    </ul>
-
-</nav>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="">Home</a></li>
+            <!-- Same page scroll links -->
+            <li><a href="#about-section" id="aboutBtn">About Us</a></li>
+            <li><a href="#contact-section" id="contactBtn">Contact Us</a></li>
+            <li><a href="/collectionagentlogin" class="login-btn">Collection Agent Login</a></li>
+            <li><a href="/farmerlogin" class="login-btn">Farmer Login</a></li>
+        </ul>
+    </nav>
 </header>
 
+<!-- HERO SECTION -->
 <section class="hero">
-<div class="hero-content">
-
-    <h1>
-        Smart Dairy Milk Collection &
-        Accounting System
-    </h1>
-
-    <p>
-        Simplify milk collection with
-        real-time Milk Analyzer integration,
-        Weighing Machine connectivity,
-        farmer management, payment tracking,
-        and collection reports.
-    </p>
-
-    <div class="hero-buttons">
-
-        <a href="/collectionagentlogin"
-           class="btn primary">
-            Collection Agent Login
-        </a>
-
-        <a href="/farmerlogin"
-           class="btn secondary">
-            Farmer Login
-        </a>
-
+    <div class="hero-content">
+        <h1>Smart Dairy Milk Collection & Accounting System</h1>
+        <p>
+            Simplify milk collection with real-time Milk Analyzer integration,
+            Weighing Machine connectivity, farmer management, payment tracking,
+            and collection reports.
+        </p>
+        <div class="hero-buttons">
+            <a href="/collectionagentlogin" class="btn primary">Collection Agent Login</a>
+            <a href="/farmerlogin" class="btn secondary">Farmer Login</a>
+        </div>
     </div>
-
-</div>
 </section>
 
+<!-- ABOUT SECTION -->
+<section id="about-section" class="about-section">
+
+    <!-- Row 1: Text LEFT, Image RIGHT -->
+    <div class="about-row">
+        <div class="about-text">
+            <span class="about-tag">Our Story</span>
+            <h2>Who We <span class="green">Are</span></h2>
+            <!-- గూగుల్ తెలుగు ఫాంట్ లింక్ (దీనిని మీ HTML లో <head> ట్యాగ్ లోపల పేస్ట్ చేయండి) -->
+<link href="https://googleapis.com" rel="stylesheet">
+
+<!-- ఫాంట్ మరియు ప్రీమియం లుక్ మార్చిన మీ పారాగ్రాఫ్ కోడ్ -->
+<p style="font-family: 'Noto Sans Telugu', 'Segoe UI', sans-serif; font-size: 1.05rem; line-height: 1.9; color: #334155; text-align: justify; font-weight: 400;">
+    నేను <strong style="color: #15803D; font-weight: 700;">కోటిపల్లి వి.వి.ఎస్.ఎస్. ప్రకాష్ నాయుడు</strong>, ఈ వ్యవస్థ వ్యవస్థాపకుడిని. 
+    ఒక CA విద్యార్థిగా నంబర్లతో ప్రయాణం చేయడం నా వృత్తి అయితే, సరికొత్త వ్యాపార ఆలోచనలకు ప్రాణం పోసే ఒక ఐడియా జనరేటర్‌ని. 
+    భారతీయ డైరీ రంగంలో లెక్కలను సులభతరం చేస్తూ, రైతన్నలకు పారదర్శకతను మరియు కలెక్షన్ ఏజెంట్లకు 
+    ఖచ్చితమైన స్మార్ట్ అకౌంటింగ్ విధానాన్ని అందించడమే నా ప్రధాన లక్ష్యం.<br>👉లెక్కల్లో ఖచ్చితత్వం... ఆలోచనల్లో ఆధునికత... ఇదే నా వ్యాపార ప్రయాణం!"
+</p>
+
+<ul class="about-features">
+                <li>✅ Built for Indian dairy industry</li>
+                <li>✅ Farmer-first approach</li>
+                <li>✅ Real-time data accuracy</li>
+            </ul>
+        </div>
+        <div class="about-image">
+            <div class="img-card green-card">
+                <span class="img-icon">🐄</span>
+                <span class="img-label">Our Story</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 2: Image LEFT, Text RIGHT -->
+    <div class="about-row reverse">
+        <div class="about-text">
+            <span class="about-tag blue-tag">Technology</span>
+            <h2>Smart <span class="blue">Milk Analyzer</span> Integration</h2>
+            <p>
+                Our system connects directly with Milk Analyzer machines and
+                Weighing Machines, capturing FAT%, SNF%, and liters
+                automatically — eliminating manual errors.
+            </p>
+            <ul class="about-features">
+                <li>✅ Auto FAT & SNF reading</li>
+                <li>✅ Weighing machine sync</li>
+                <li>✅ Morning & Evening session support</li>
+                <li>✅ Manual entry fallback</li>
+            </ul>
+        </div>
+        <div class="about-image">
+            <div class="img-card blue-card">
+                <span class="img-icon">🧪</span>
+                <span class="img-label">Milk Analyzer</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 3: Text LEFT, Image RIGHT -->
+    <div class="about-row">
+        <div class="about-text">
+            <span class="about-tag gold-tag">Farmers</span>
+            <h2>Empowering <span class="gold">Every Farmer</span></h2>
+            <p>
+                Each farmer gets their own profile, collection history,
+                ledger, and payment records. Manage hundreds of farmers
+                with full traceability.
+            </p>
+            <ul class="about-features">
+                <li>✅ Individual farmer profiles</li>
+                <li>✅ Complete ledger history</li>
+                <li>✅ Monthly payment reports</li>
+                <li>✅ Profile receipt sharing</li>
+            </ul>
+        </div>
+        <div class="about-image">
+            <div class="img-card gold-card">
+                <span class="img-icon">👨‍🌾</span>
+                <span class="img-label">Farmer Management</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 4: Image LEFT, Text RIGHT -->
+    <div class="about-row reverse">
+        <div class="about-text">
+            <span class="about-tag teal-tag">Payments</span>
+            <h2>Transparent <span class="teal">Payment Tracking</span></h2>
+            <p>
+                Full payment transparency with advance, bonus, deduction,
+                and balance due tracking. Cash, UPI, and Bank Transfer
+                with automatic status updates.
+            </p>
+            <ul class="about-features">
+                <li>✅ Cash / UPI / Bank Transfer</li>
+                <li>✅ Partial payment support</li>
+                <li>✅ Automated balance tracking</li>
+                <li>✅ PDF bill generation</li>
+            </ul>
+        </div>
+        <div class="about-image">
+            <div class="img-card teal-card">
+                <span class="img-icon">💰</span>
+                <span class="img-label">Payment Tracking</span>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contact-section" class="contact-section">
+    <div class="contact-container">
+        <div class="contact-header">
+            <span class="about-tag teal-tag">Get In Touch</span>
+            <h2>Contact <span class="teal">Us</span></h2>
+            <p>మా సేవలు లేదా సిస్టమ్ ఇంటెగ్రేషన్ గురించి ఏవైనా ప్రశ్నలు ఉంటే మాకు సందేశం పంపండి.</p>
+        </div>
+        
+        <div class="contact-wrapper">
+            <!-- కాంటాక్ట్ ఫారమ్ (id="form" జోడించబడింది) -->
+            <form id="form" action="https://api.web3forms.com/submit"method="POST">
+                <input type="hidden" name="access_key" value="8b8322f5-a5c6-46f3-ba7d-50454871c0a8">
+                <input type="text" name="name" placeholder="మీ పేరు" required>
+                <input type="email" name="email" placeholder="మీ ఈమెయిల్" required>
+                <textarea name="message" placeholder="మీ సందేశం" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+            
+            <!-- కాంటాక్ట్ వివరాలు -->
+            <div class="contact-info">
+                <div class="info-card">
+                    <span class="info-icon">📍</span>
+                    <div>
+                        <h4>చిరునామా</h4>
+                        <p>KONC-Ksheera Dairy Solutions, Andhra Pradesh, India.</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <span class="info-icon">📞</span>
+                    <div>
+                        <h4>ఫోన్ నంబర్</h4>
+                        <p>+91 9550272122</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <span class="info-icon">✉️</span>
+                    <div>
+                        <h4>ఈమెయిల్</h4>
+                        <p>ask.konc@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER (సరిచేసి క్లోజ్ చేయబడింది) -->
 <footer class="footer">
-<div class="footer-container">
-
-    <div class="footer-box">
-
-        <h3>Milk Accounting System</h3>
-
-        <p>
-            Complete dairy collection and
-            accounting solution with
-            Milk Analyzer and Weighing
-            Machine integration.
-        </p>
-
+    <div class="footer-container">
+        <div class="footer-box">
+            <h3>Milk Accounting System</h3>
+            <p>Complete dairy collection and accounting solution with Milk Analyzer and Weighing Machine integration.</p>
+        </div>
+        <div class="footer-box">
+            <h3>Quick Links</h3>
+            <a href="">Home</a>
+            <a href="#about-section">About Us</a>
+            <a href="#contact-section">Contact Us</a>
+        </div>
+        <div class="footer-box">
+            <h3>Portals</h3>
+            <a href="/collectionagentlogin">Collection Agent Login</a>
+            <a href="/farmerlogin">Farmer Login</a>
+        </div>
     </div>
-
-    <div class="footer-box">
-
-        <h3>Quick Links</h3>
-
-        <a href="/">Home</a>
-        <a href="/about">About Us</a>
-        <a href="/contact">Contact Us</a>
-
+    <div class="footer-bottom">
+        <p>&copy; 2026 K O N C- Ksheera. All rights reserved.</p>
     </div>
-
-    <div class="footer-box">
-
-        <h3>Portals</h3>
-
-        <a href="/collectionagentlogin">
-            Collection Agent Login
-        </a>
-
-        <a href="/farmerlogin">
-            Farmer Login
-        </a>
-
-    </div>
-
-    <div class="footer-box">
-
-        <h3>Features</h3>
-
-        <p>Milk Analyzer Integration</p>
-        <p>Weighing Machine Integration</p>
-        <p>Farmer Management</p>
-        <p>Collection Reports</p>
-        <p>Payment Tracking</p>
-
-    </div>
-
-</div>
-
-<div class="footer-bottom">
-
-    <p>
-        © 2026 Milk Accounting System.
-        All Rights Reserved.
-    </p>
-
-</div>
 </footer>
 
+<!-- మీ JavaScript ఫైల్‌ను ఇక్కడ లింక్ చేయండి -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    // 1. About Us navbar click → smooth scroll
+    var aboutBtn = document.getElementById("aboutBtn");
+    if (aboutBtn) {
+        aboutBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            var aboutSection = document.getElementById("about-section");
+            if (aboutSection) {
+                aboutSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        });
+    }
+
+    // 2. FIXED: Contact Us navbar click → smooth scroll (కొత్తగా జోడించబడింది)
+    var contactBtn = document.getElementById("contactBtn");
+    if (contactBtn) {
+        contactBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            var contactSection = document.getElementById("contact-section");
+            if (contactSection) {
+                contactSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        });
+    }
+
+    // 3. Footer Links (About & Contact) → smooth scroll
+    // href లో # ఉన్న అన్ని లింకులను ఆటోమేటిక్‌గా స్మూత్ స్క్రోల్ చేస్తుంది
+    var footerLinks = document.querySelectorAll('a[href^="#"]');
+    footerLinks.forEach(function (link) {
+        link.addEventListener("click", function (e) {
+            e.preventDefault();
+            var targetId = this.getAttribute("href");
+            var targetSection = document.getElementById(targetId.replace("#", ""));
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        });
+    });
+
+    // 4. Scroll animation - rows fade in when visible
+    var rows = document.querySelectorAll(".about-row");
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    rows.forEach(function (row) {
+        observer.observe(row);
+    });
+    
+    // 5. Mobile Menu Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+    }
+
+        // 6. Web3Forms Form Submission Message
+    const form = document.getElementById('form');
+    if (form) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            
+            // FIXED: append కి బదులుగా set వాడుతున్నాము మరియు కీ చివర స్పేస్‌లు లేకుండా .trim() చేసాము
+            const cleanKey = "8b8322f5-a5c6-46f3-ba7d-50454871c0a8".trim();
+            formData.set("access_key", cleanKey);
+
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = "Sending...";
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                // FIXED: response.ok తో పాటు data.success కూడా ట్రూ అయిందో లేదో చూస్తున్నాము
+                if (response.ok && data.success) {
+                    alert("Success! Your message has been sent.");
+                    form.reset();
+                } else {
+                    alert("Error: " + (data.message || "Submission failed. Please check Access Key."));
+                }
+
+            } catch (error) {
+                alert("Something went wrong. Please try again.");
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
+}); // DOMContentLoaded ఇక్కడితో ముగుస్తుంది
+
+</script>
 </body>
 </html>
